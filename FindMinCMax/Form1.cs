@@ -16,5 +16,13 @@ namespace FindMinCMax
         {
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            var utils = new Utils();
+            var cMax = utils.FindCMax();
+
+            lblCMax.Text = cMax.ToString();
+        }
     }
 }

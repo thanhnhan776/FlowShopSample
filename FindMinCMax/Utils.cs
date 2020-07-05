@@ -9,6 +9,8 @@ namespace FindMinCMax
 {
     class Utils
     {
+        private const int V = 1000000000;
+
         private int[] jobsPermutaion = { 2, 1, 3, 4, 5 };
 
         private int[][] jobAssignments =
@@ -32,7 +34,7 @@ namespace FindMinCMax
             new[] {new[] {1}, new int[]{}, new[] {1}, new[] {1}, new[] {1}}
         }; // E[i][j][k]: stage i, job j, machine k
 
-        private int[][][] processingTime =
+        private int[][][] processingTimes =
         {
             new[] {new[] {10, 6, 0, 0, 11}, new[] {15, 9, 0, 10, 14}},
             new[] {new[] {0, 11, 9, 0, 6}, new[] {8, 4, 0, 0, 12}},
@@ -50,12 +52,14 @@ namespace FindMinCMax
         private List<Job> Jobs;
         private List<Stage> Stages;
 
+        private const int JobsCount = 5;
+        private const int StagesCount = 3;
+
         public Utils()
         {
-            const int jobsCount = 5;
-            const int stagesCount = 3;
-            InitJobs(jobsCount);
-            InitStagesAndTheirMachines(stagesCount);
+
+            InitJobs(JobsCount);
+            InitStagesAndTheirMachines(StagesCount);
         }
 
         void InitJobs(int jobsCount)
@@ -63,7 +67,7 @@ namespace FindMinCMax
             Jobs = new List<Job>(jobsCount);
             for (var i = 0; i < jobsCount; ++i)
             {
-                Jobs[i] = new Job { Id = i, CurrentTime = 0 };
+                Jobs.Add(new Job { Id = i, CurrentTime = 0 });
             }
         }
 
@@ -72,24 +76,51 @@ namespace FindMinCMax
             Stages = new List<Stage>(stagesCount);
             for (var i = 0; i < stagesCount; ++i)
             {
-                Stages[i] = new Stage {Id = i, Machines = new List<Machine>(machines[i].Length)};
+                Stages.Add(new Stage { Id = i, Machines = new List<Machine>(machines[i].Length) });
             }
 
             for (var i = 0; i < stagesCount; ++i)
             {
-                var machinesCount = Stages[i].Machines.Count;
+                var machinesCount = machines[i].Length;
                 for (var l = 0; l < machinesCount; ++l)
                 {
-                    Stages[i].Machines[l] = new Machine {Id = l, AvailableTime = 0};
+                    Stages[i].Machines.Add(new Machine { Id = l, AvailableTime = 0 });
                 }
             }
         }
 
-        public int FindMin()
+        public int FindCMax()
         {
+            var cMax = 0;
+            for (var k = 0; k < JobsCount; ++k)
+            {
+                // find total processing time of job k
+                var jobId = jobsPermutaion[k];
+                var jobPosition = jobId - 1;
+                for (var i = 0; i < StagesCount; ++i)
+                {
+                    var machineId = jobAssignments[i][k];
+                    if (machineId == 0)
+                    {
+                        continue;
+                    }
+                    var machinePosition = machineId - 1;
+                    var processingTime = processingTimes[i][machinePosition][jobPosition];
 
+                    //Console.WriteLine($@"Stage {i}, Machine {machinePosition}, Job {jobPosition} -> Time {processingTime}");
 
-            return 0;
+                    var headTime = Math.Max(Jobs[jobPosition].CurrentTime,
+                        Stages[i].Machines[machinePosition].AvailableTime);
+
+                    Jobs[jobPosition].CurrentTime = headTime + processingTime;
+                    Stages[i].Machines[machinePosition].AvailableTime = headTime + processingTime;
+                }
+
+                //Console.WriteLine($@"Job {jobPosition}: Cmax: {Jobs[jobPosition].CurrentTime}");
+                cMax = Math.Max(cMax, Jobs[jobPosition].CurrentTime);
+            }
+
+            return cMax;
         }
     }
 }
