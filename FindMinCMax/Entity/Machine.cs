@@ -10,5 +10,6 @@ namespace FindMinCMax.Entity
     {
         public int Id { get; set; }
         public int AvailableTime { get; set; }
+        public int CurrentJobPosition { get; set; }
     }
 }
