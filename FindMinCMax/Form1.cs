@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FindMinCMax.Helpers;
 
 namespace FindMinCMax
 {
@@ -23,6 +24,10 @@ namespace FindMinCMax
             var cMax = utils.FindCMax();
 
             lblCMax.Text = cMax.ToString();
+
+            JobHelper.NumOfJobs = 5;
+            //JobHelper.GeneratePermutation();
+            JobHelper.GenerateJobAssignmentPermutation();
         }
     }
 }

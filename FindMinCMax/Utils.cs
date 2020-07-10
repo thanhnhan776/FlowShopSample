@@ -11,7 +11,7 @@ namespace FindMinCMax
     {
         private const int V = 1000000000;
 
-        private int[] jobsPermutaion = { 2, 1, 3, 4, 5 };
+        public int[] jobsPermutation { get; set; } = { 2, 1, 3, 4, 5 };
 
         private int[][] jobAssignments =
         {
@@ -27,7 +27,7 @@ namespace FindMinCMax
             new[] {1}
         }; // machines[i][l]: stage i, machine l
 
-        private int[][][] egilibility =
+        public int[][][] eligibility =
         {
             new[] {new[] {1, 2}, new[] {1, 2}, new int[] { }, new[] {2}, new[] {1, 2}},
             new[] {new[] {2}, new[] {1, 2}, new[] {1}, new int[] { }, new[] {1, 2}},
@@ -148,7 +148,7 @@ namespace FindMinCMax
             for (var k = 0; k < JobsCount; ++k)
             {
                 // find total processing time of job k
-                var jobId = jobsPermutaion[k];
+                var jobId = jobsPermutation[k];
                 var jobPosition = jobId - 1;
                 for (var i = 0; i < StagesCount; ++i)
                 {
