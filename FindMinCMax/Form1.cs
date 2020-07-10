@@ -26,8 +26,10 @@ namespace FindMinCMax
             lblCMax.Text = cMax.ToString();
 
             JobHelper.NumOfJobs = 5;
-            //JobHelper.GeneratePermutation();
-            JobHelper.GenerateJobAssignmentPermutation();
+            JobHelper.GeneratePermutation();
+
+            //JobHelper.X = new[] {2, 1, 3, 4, 5};
+            //JobHelper.GenerateJobAssignmentPermutation();
         }
     }
 }

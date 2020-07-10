@@ -1,4 +1,5 @@
 ﻿using System;
+using FindMinCMax.Entity;
 
 namespace FindMinCMax.Helpers
 {
@@ -7,7 +8,7 @@ namespace FindMinCMax.Helpers
         public static int NumOfJobs { get; set; } = 0;
         public static int NumOfPermutation { get; set; }
         private static bool[] IsAvailable { get; set; }
-        private static int[] X { get; set; }
+        public static int[] X { get; set; }
 
         private static Utils utils = new Utils();
         private static int[][][] Eligibility = utils.eligibility;
@@ -74,7 +75,7 @@ namespace FindMinCMax.Helpers
             NumOfPermutation = 0;
         }
 
-        public static void GenerateJobAssignmentPermutation()
+        private static void GenerateJobAssignmentPermutation()
         {
             InitJobAssignmentPermutation();
             PermuteAssignments(0, 0);
@@ -114,7 +115,8 @@ namespace FindMinCMax.Helpers
             }
             else
             {
-                var numOfMachines = Eligibility[i][j].Length;
+                var jobPosition = X[j] - 1;
+                var numOfMachines = Eligibility[i][jobPosition].Length;
                 if (numOfMachines == 0)
                 {
                     JobAssignments[i][j] = 0;
@@ -124,12 +126,12 @@ namespace FindMinCMax.Helpers
                 {
                     for (var machine = 0; machine < numOfMachines; ++machine)
                     {
-                        if (IsMachineAvailable[i][j][machine])
+                        if (IsMachineAvailable[i][jobPosition][machine])
                         {
-                            IsMachineAvailable[i][j][machine] = false;
-                            JobAssignments[i][j] = machine + 1;
+                            IsMachineAvailable[i][jobPosition][machine] = false;
+                            JobAssignments[i][j] = Eligibility[i][jobPosition][machine]; //machine + 1;
                             PermuteAssignments(i, j + 1);
-                            IsMachineAvailable[i][j][machine] = true;
+                            IsMachineAvailable[i][jobPosition][machine] = true;
                         }
                     }
                 }
@@ -137,6 +139,23 @@ namespace FindMinCMax.Helpers
         }
 
         private static void ProcessMachinesPermutation()
+        {
+            //PrintJobAssignments();
+            utils = new Utils
+            {
+                jobsPermutation = X, 
+                jobAssignments = JobAssignments
+            };
+            var cMax = utils.FindCMax();
+
+            PrintX();
+            PrintJobAssignments();
+            //Console.WriteLine($@"Job assignment No. {JobAssignmentsCount}");
+            Console.WriteLine($@"===> Cmax = {cMax}");
+            Console.WriteLine();
+        }
+
+        private static void PrintJobAssignments()
         {
             Console.WriteLine($@"Job assignment {JobAssignmentsCount}:");
             for (var i = 0; i < NumOfStages; ++i)

@@ -13,7 +13,7 @@ namespace FindMinCMax
 
         public int[] jobsPermutation { get; set; } = { 2, 1, 3, 4, 5 };
 
-        private int[][] jobAssignments =
+        public int[][] jobAssignments =
         {
             new[]  {2, 1, 0, 2, 1},
             new[] {1, 2, 1, 0, 2},
