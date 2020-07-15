@@ -14,8 +14,12 @@ namespace FindMinCMax.Helpers
         private static int[][][] Eligibility = utils.eligibility;
         private static int NumOfStages = Eligibility.Length;
         private static bool[][][] IsMachineAvailable { get; set; }
-        private static int[][] JobAssignments { get; set; }
+        public static int[][] JobAssignments { get; set; }
         private static int JobAssignmentsCount { get; set; }
+
+        public static int resultCmax = 1000000000;
+        public static int[] resultJobPermutation;
+        public static int[][] resultJobAssignments;
 
         public static void GeneratePermutation()
         {
@@ -75,7 +79,7 @@ namespace FindMinCMax.Helpers
             NumOfPermutation = 0;
         }
 
-        private static void GenerateJobAssignmentPermutation()
+        public  static void GenerateJobAssignmentPermutation()
         {
             InitJobAssignmentPermutation();
             PermuteAssignments(0, 0);
@@ -138,7 +142,7 @@ namespace FindMinCMax.Helpers
             }
         }
 
-        private static void ProcessMachinesPermutation()
+        public static void ProcessMachinesPermutation()
         {
             //PrintJobAssignments();
             utils = new Utils
@@ -147,6 +151,13 @@ namespace FindMinCMax.Helpers
                 jobAssignments = JobAssignments
             };
             var cMax = utils.FindCMax();
+
+            resultCmax = Math.Min(resultCmax, cMax);
+            if (resultCmax == cMax)
+            {
+                resultJobAssignments = JobAssignments;
+                resultJobPermutation = X;
+            }
 
             PrintX();
             PrintJobAssignments();

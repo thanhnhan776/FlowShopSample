@@ -191,8 +191,8 @@ namespace FindMinCMax
 
                     var timeTaken = headTime + processingTime - offerAddedBySetupTime;
 
-                    //Console.WriteLine(
-                    //    $@"Stage {i+1}, Machine {machinePosition+1}, Job {jobPosition+1}, CurrentTime {Jobs[jobPosition].CurrentTime + lagTime} -> TimeTaken {timeTaken}");
+                    Console.WriteLine(
+                        $@"Stage {i + 1}, Machine {machinePosition + 1}, Job {jobPosition + 1}, CurrentTime {Jobs[jobPosition].CurrentTime + lagTime}, HeadTime {headTime}, SetupOffer {offerAddedBySetupTime}  -> TimeTaken {timeTaken}");
 
                     Jobs[jobPosition].CurrentTime = timeTaken;
                     Stages[i].Machines[machinePosition].AvailableTime = timeTaken;
