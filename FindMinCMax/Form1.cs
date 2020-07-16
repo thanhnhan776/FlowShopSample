@@ -44,14 +44,51 @@ namespace FindMinCMax
             //    Console.WriteLine();
             //}
 
-            JobHelper.X = new[] { 1, 2 ,4, 5, 3 };
-            JobHelper.JobAssignments = new[]
+            JobHelper.X = new[] { 5, 4, 3, 2, 1 };
+            //JobHelper.JobAssignments = new[]
+            //{
+            //    new []{1, 2, 2, 1, 0},
+            //    new []{2, 1, 0, 1, 1},
+            //    new []{1, 0, 1, 1, 1}
+            //};
+            //JobHelper.ProcessMachinesPermutation();
+            //JobHelper.GenerateJobAssignmentPermutation();
+
+            //Console.WriteLine(JobHelper.resultCmax);
+            //PrintJobsPermutation(JobHelper.resultJobPermutation);
+            //PrintJobAssignments(JobHelper.resultJobAssignments);
+
+            var sa = new SimulatedAnnealingAlgo
             {
-                new []{1, 2, 2, 1, 0},
-                new []{2, 1, 0, 1, 1},
-                new []{1, 0, 1, 1, 1}
+                NumOfJobs = 5, 
+                LoopCount = 3
             };
-            JobHelper.ProcessMachinesPermutation();
+            sa.StartSimulating();
+
+            Console.WriteLine(sa.ResultCmax);
+            PrintJobsPermutation(sa.ResultJobsPermutation);
+            PrintJobAssignments(sa.ResultJobsAssignment);
+        }
+
+        private static void PrintJobAssignments(int[][] jobsAssignment)
+        {
+            for (var i = 0; i < 3; ++i)
+            {
+                for (var j = 0; j < 5; ++j)
+                {
+                    Console.Write($@"{jobsAssignment[i][j]} ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private static void PrintJobsPermutation(int[] jobsPermutation)
+        {
+            for (var i = 0; i < jobsPermutation.Length; ++i)
+            {
+                Console.Write($@"{jobsPermutation[i]} ");
+            }
+            Console.WriteLine();
         }
     }
 }

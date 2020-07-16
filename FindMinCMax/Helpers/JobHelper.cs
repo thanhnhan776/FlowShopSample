@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FindMinCMax.Entity;
 
 namespace FindMinCMax.Helpers
@@ -8,6 +9,10 @@ namespace FindMinCMax.Helpers
         public static int NumOfJobs { get; set; } = 0;
         public static int NumOfPermutation { get; set; }
         private static bool[] IsAvailable { get; set; }
+
+        /**
+         * Job permutation
+         */
         public static int[] X { get; set; }
 
         private static Utils utils = new Utils();
@@ -79,7 +84,7 @@ namespace FindMinCMax.Helpers
             NumOfPermutation = 0;
         }
 
-        public  static void GenerateJobAssignmentPermutation()
+        public static void GenerateJobAssignmentPermutation()
         {
             InitJobAssignmentPermutation();
             PermuteAssignments(0, 0);
@@ -152,18 +157,18 @@ namespace FindMinCMax.Helpers
             };
             var cMax = utils.FindCMax();
 
-            resultCmax = Math.Min(resultCmax, cMax);
-            if (resultCmax == cMax)
+            if (resultCmax > cMax)
             {
-                resultJobAssignments = JobAssignments;
-                resultJobPermutation = X;
+                resultCmax = cMax;
+                resultJobAssignments = JobAssignments.Select(row => row.Select(cell => cell).ToArray()).ToArray();
+                resultJobPermutation = X.Select(cell => cell).ToArray();
             }
 
-            PrintX();
-            PrintJobAssignments();
+            //PrintX();
+            //PrintJobAssignments();
             //Console.WriteLine($@"Job assignment No. {JobAssignmentsCount}");
-            Console.WriteLine($@"===> Cmax = {cMax}");
-            Console.WriteLine();
+            //Console.WriteLine($@"===> Cmax = {cMax}");
+            //Console.WriteLine();
         }
 
         private static void PrintJobAssignments()
