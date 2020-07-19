@@ -23,6 +23,10 @@ namespace FindMinCMax.Helpers
             var jobs = new Neighbor(jobsPermutation);
             jobs.CalculateCmax();
 
+            Console.WriteLine($@"INITIAL JOBS: Cmax={jobs.Cmax}");
+            PrintJobsPermutation(jobsPermutation);
+            PrintJobAssignments(jobs.JobsAssignment);
+
             var result = jobs;
             var rand = new Random();
             var beta = rand.NextDouble();
@@ -128,6 +132,29 @@ namespace FindMinCMax.Helpers
             neighbor[swapIndex] = neighbor[swapIndex + 1];
             neighbor[swapIndex + 1] = tmp;
             return neighbor;
+        }
+
+        private static void PrintJobAssignments(int[][] jobsAssignment)
+        {
+            Console.WriteLine(@"=> Job assignment: ");
+            for (var i = 0; i < 3; ++i)
+            {
+                for (var j = 0; j < 5; ++j)
+                {
+                    Console.Write($@"{jobsAssignment[i][j]} ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private static void PrintJobsPermutation(int[] jobsPermutation)
+        {
+            Console.WriteLine(@"=> Job permutation: ");
+            for (var i = 0; i < jobsPermutation.Length; ++i)
+            {
+                Console.Write($@"{jobsPermutation[i]} ");
+            }
+            Console.WriteLine();
         }
     }
 

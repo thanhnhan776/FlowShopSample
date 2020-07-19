@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FindMinCMax.Entity;
+using FindMinCMax.Input;
 
 namespace FindMinCMax
 {
@@ -20,102 +21,37 @@ namespace FindMinCMax
             new[] {0, 1, 1, 1, 1}
         }; // row: stages, column position: corresponding to job permutation, cell: assigned machine to a job at a stage
 
-        private int[][] machines =
-        {
-            new[] {1, 2},
-            new[] {1, 2},
-            new[] {1}
-        }; // machines[i][l]: stage i, machine l
-
-        public int[][][] eligibility =
-        {
-            new[] {new[] {1, 2}, new[] {1, 2}, new int[] { }, new[] {2}, new[] {1, 2}},
-            new[] {new[] {2}, new[] {1, 2}, new[] {1}, new int[] { }, new[] {1, 2}},
-            new[] {new[] {1}, new int[]{}, new[] {1}, new[] {1}, new[] {1}}
-        }; // E[i][j][k]: stage i, job j, machine k
-
-        private int[][][] processingTimes =
-        {
-            new[] {new[] {10, 6, 0, 0, 11}, new[] {15, 9, 0, 10, 14}},
-            new[] {new[] {0, 11, 9, 0, 6}, new[] {8, 4, 0, 0, 12}},
-            new[] {new[] {6, 0, 8, 6, 3}}
-        }; // PT[i][l][j]: stage i, machine l, job j
-
-        private int[][][] lagTimes =
-        {
-            new []{new []{10, 2, 0, 0, -5}, new []{2, -2, 0, 1, -6} },
-            new []{new []{0, 0, 3, 0, -3}, new []{-4, 0, 0, 0, 8} }
-        }; // lagTime[i][l][j]: stage i, machine l, job j
-
-        // TODO: setup time
-
-        private int[][][][] setupTimes =
-        {
-            new []
-            {
-                new []
-                {
-                    new []{-1, 3, -1, -1, 4},
-                    new []{4, -1, -1, -1, 1},
-                    new []{-1, -1, -1, -1, -1},
-                    new []{-1, -1, -1, -1, -1},
-                    new []{6, -1, -1, -1, -1}
-                },
-                new []
-                {
-                    new []{-1, 6, -1, 8, 2},
-                    new []{5, -1, -1, 6, 4},
-                    new []{-1, -1, -1, -1, -1},
-                    new [] {8, -1, -1, -1, 2},
-                    new []{10, -1, -1, 4, -1}
-                }
-            },
-            new []
-            {
-                new []
-                {
-                    new []{-1, -1, -1, -1, -1},
-                    new []{-1, -1, 6, -1, 4},
-                    new []{-1, 8, -1, -1, 5},
-                    new []{-1, -1, -1, -1, -1},
-                    new []{-1, -1 -1, -1, -1}
-                },
-                new []
-                {
-                    new []{-1, 6, -1, -1, 6},
-                    new []{5, -1, -1, -1, 2},
-                    new []{-1, -1, -1, -1, -1},
-                    new []{-1, -1, -1, -1, -1},
-                    new []{4, -1, -1, -1, -1}
-                }
-            },
-            new []
-            {
-                new []
-                {
-                    new []{-1, -1, 6, 3, 9},
-                    new []{-1, -1, -1, -1, -1},
-                    new []{4, -1, -1, 1, 8},
-                    new []{5, -1, -1, -1, 2},
-                    new []{2, -1, -1, 6, -1 }
-                }
-            }
-        }; // setupTimes[i][l][j][k]: stage i, machine l, job j precedes job k
+        private int[][] machines;
+        public int[][][] eligibility;
+        private int[][][] processingTimes;
+        private int[][][] lagTimes;
+        private int[][][][] setupTimes;
 
         private List<Job> Jobs;
         private List<Stage> Stages;
 
-        private const int JobsCount = 5;
-        private const int StagesCount = 3;
+        private int numOfJobs;
+        private int numOfStages;
 
         public Utils()
         {
-
-            InitJobs(JobsCount);
-            InitStagesAndTheirMachines(StagesCount);
+            InitInputData();
+            InitJobs(numOfJobs);
+            InitStagesAndTheirMachines(numOfStages);
         }
 
-        void InitJobs(int jobsCount)
+        private void InitInputData()
+        {
+            numOfStages = InputData.NumOfStages;
+            numOfJobs = InputData.NumOfJobs;
+            machines = InputData.Machines;
+            eligibility = InputData.Eligibility;
+            processingTimes = InputData.ProcessingTimes;
+            lagTimes = InputData.LagTimes;
+            setupTimes = InputData.SetupTimes;
+        }
+
+        private void InitJobs(int jobsCount)
         {
             Jobs = new List<Job>(jobsCount);
             for (var i = 0; i < jobsCount; ++i)
@@ -124,7 +60,7 @@ namespace FindMinCMax
             }
         }
 
-        void InitStagesAndTheirMachines(int stagesCount)
+        private void InitStagesAndTheirMachines(int stagesCount)
         {
             Stages = new List<Stage>(stagesCount);
             for (var i = 0; i < stagesCount; ++i)
@@ -145,12 +81,12 @@ namespace FindMinCMax
         public int FindCMax()
         {
             var cMax = 0;
-            for (var k = 0; k < JobsCount; ++k)
+            for (var k = 0; k < numOfJobs; ++k)
             {
                 // find total processing time of job k
                 var jobId = jobsPermutation[k];
                 var jobPosition = jobId - 1;
-                for (var i = 0; i < StagesCount; ++i)
+                for (var i = 0; i < numOfStages; ++i)
                 {
                     // 1. BEFORE PROCESSING
                     var machineId = jobAssignments[i][k];
@@ -173,7 +109,7 @@ namespace FindMinCMax
                     {
                         // not the first stage
                         var previousMachinePosition = jobAssignments[i - 1][k] - 1;
-                        lagTime = previousMachinePosition >= 0 
+                        lagTime = previousMachinePosition >= 0
                                     ? lagTimes[i - 1][previousMachinePosition][jobPosition]
                                     : 0;
                     }
@@ -197,7 +133,7 @@ namespace FindMinCMax
                     Jobs[jobPosition].CurrentTime = timeTaken;
                     Stages[i].Machines[machinePosition].AvailableTime = timeTaken;
 
-                    
+
 
                     // --- END OF WHILE PROCESSING
 
