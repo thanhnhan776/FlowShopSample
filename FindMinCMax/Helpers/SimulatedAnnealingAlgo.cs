@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FindMinCMax.Utils;
 
 namespace FindMinCMax.Helpers
 {
@@ -11,9 +12,18 @@ namespace FindMinCMax.Helpers
         public int LoopCount { get; set; }
         public int NumOfJobs { get; set; }
 
-        public int[] ResultJobsPermutation { get; set; }
-        public int[][] ResultJobsAssignment { get; set; }
+        public Neighbor InitJobs { get; set; }
+
+        public int[] ResultJobPermutation { get; set; }
+        public int[][] ResultJobAssignment { get; set; }
         public int ResultCmax { get; set; }
+
+        private JobHelper _jobHelper;
+
+        public SimulatedAnnealingAlgo()
+        {
+            _jobHelper = new JobHelper();
+        }
 
         public void StartSimulating()
         {
@@ -22,10 +32,16 @@ namespace FindMinCMax.Helpers
             var jobsPermutation = GetRandomInitialJobsPermutation();
             var jobs = new Neighbor(jobsPermutation);
             jobs.CalculateCmax();
+            InitJobs = new Neighbor
+            {
+                Cmax = jobs.Cmax,
+                JobsPermutation = jobs.JobsPermutation.ClonedInstance(),
+                JobsAssignment = jobs.JobsAssignment
+            };
 
-            Console.WriteLine($@"INITIAL JOBS: Cmax={jobs.Cmax}");
-            PrintJobsPermutation(jobsPermutation);
-            PrintJobAssignments(jobs.JobsAssignment);
+            //Console.WriteLine($@"INITIAL JOBS: Cmax={jobs.Cmax}");
+            //PrintJobsPermutation(jobsPermutation);
+            //PrintJobAssignments(jobs.JobsAssignment);
 
             var result = jobs;
             var rand = new Random();
@@ -63,8 +79,8 @@ namespace FindMinCMax.Helpers
             }
 
             ResultCmax = result.Cmax;
-            ResultJobsPermutation = result.JobsPermutation;
-            ResultJobsAssignment = result.JobsAssignment;
+            ResultJobPermutation = result.JobsPermutation;
+            ResultJobAssignment = result.JobsAssignment;
         }
 
         private int[] GetInitialJobsPermutation()
@@ -176,12 +192,15 @@ namespace FindMinCMax.Helpers
 
         public void CalculateCmax()
         {
-            JobHelper.NumOfJobs = JobsPermutation.Length;
-            JobHelper.X = JobsPermutation;
-            JobHelper.GenerateJobAssignmentPermutation();
+            var jobHelper = new JobHelper
+            {
+                NumOfJobs = JobsPermutation.Length, 
+                X = JobsPermutation
+            };
+            jobHelper.GenerateJobAssignmentPermutation();
 
-            JobsAssignment = JobHelper.resultJobAssignments;
-            Cmax = JobHelper.resultCmax;
+            JobsAssignment = jobHelper.ResultJobAssignments.ClonedInstance();
+            Cmax = jobHelper.ResultCmax;
 
             //Console.WriteLine(@"===> SA Cmax: " + Cmax);
             //for (var i = 0; i < 3; ++i)

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using FindMinCMax.Helpers;
 using FindMinCMax.Input;
+using FindMinCMax.Utils;
 
 namespace FindMinCMax
 {
@@ -88,6 +91,7 @@ namespace FindMinCMax
         {
             InitializeComponent();
             InitInputData();
+            InitDisplayInputData();
         }
 
         private void InitInputData()
@@ -101,11 +105,22 @@ namespace FindMinCMax
             InputData.SetupTimes = setupTimes;
         }
 
+        private void InitDisplayInputData()
+        {
+            txtNumOfStages.Text = numOfStages.ToString();
+            txtNumOfJobs.Text = numOfJobs.ToString();
+            txtMachines.Text = machines.DisplayText();
+            txtEligibility.Text = eligibility.DisplayText(DisplayTypes.Eligibility);
+            txtProcessingTime.Text = processingTimes.DisplayText(DisplayTypes.ProcessingTime);
+            txtLagTime.Text = lagTimes.DisplayText(DisplayTypes.LagTime);
+            txtSetupTime.Text = setupTimes.DisplayText();
+
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            return;
 
-            JobHelper.NumOfJobs = 5;
-            //JobHelper.GeneratePermutation();
 
             //Console.WriteLine($@"Result Cmax = {JobHelper.resultCmax}");
             //for (var i = 0; i < 5; ++i)
@@ -122,7 +137,6 @@ namespace FindMinCMax
             //    Console.WriteLine();
             //}
 
-            JobHelper.X = new[] { 5, 4, 3, 2, 1 };
             //JobHelper.JobAssignments = new[]
             //{
             //    new []{1, 2, 2, 1, 0},
@@ -135,20 +149,6 @@ namespace FindMinCMax
             //Console.WriteLine(JobHelper.resultCmax);
             //PrintJobsPermutation(JobHelper.resultJobPermutation);
             //PrintJobAssignments(JobHelper.resultJobAssignments);
-
-            var sa = new SimulatedAnnealingAlgo
-            {
-                NumOfJobs = 5, 
-                LoopCount = 3
-            };
-            sa.StartSimulating();
-
-            Console.WriteLine();
-            Console.WriteLine($@"RESULT JOBS: Cmax = {sa.ResultCmax}");
-            Console.WriteLine(@"=> Job permutation: ");
-            PrintJobsPermutation(sa.ResultJobsPermutation);
-            Console.WriteLine(@"=> Job assignment: ");
-            PrintJobAssignments(sa.ResultJobsAssignment);
         }
 
         private static void PrintJobAssignments(int[][] jobsAssignment)
@@ -167,9 +167,54 @@ namespace FindMinCMax
         {
             for (var i = 0; i < jobsPermutation.Length; ++i)
             {
-                Console.Write($@"{jobsPermutation[i]} ");
+                Console.Write($@"{i} ");
             }
             Console.WriteLine();
+        }
+
+        private void btnRunBruteForce_Click(object sender, EventArgs e)
+        {
+            EnableRunButtons(false);
+
+            var jobHelper = new JobHelper();
+            jobHelper.GeneratePermutation();
+            var cMax = jobHelper.ResultCmax;
+            var jobPermutation = jobHelper.ResultJobPermutation;
+            var jobAssignment = jobHelper.ResultJobAssignments;
+            txtResultBF.Text = DisplayUtils.DisplayText(cMax, jobPermutation, jobAssignment);
+
+            EnableRunButtons();
+        }
+
+        private void EnableRunButtons(bool isEnabled = true)
+        {
+            btnRunSA.Enabled = isEnabled;
+            btnRunBruteForce.Enabled = isEnabled;
+        }
+
+        private void btnRunSA_Click(object sender, EventArgs e)
+        {
+            EnableRunButtons(false);
+
+            var sa = new SimulatedAnnealingAlgo
+            {
+                NumOfJobs = InputData.NumOfJobs, 
+                LoopCount = 3
+            };
+            sa.StartSimulating();
+
+            var initText = DisplayUtils.DisplayText(sa.InitJobs.Cmax, sa.InitJobs.JobsPermutation,
+                sa.InitJobs.JobsAssignment);
+
+            var cMax = sa.ResultCmax;
+            var jobPermutation = sa.ResultJobPermutation;
+            var jobAssignment = sa.ResultJobAssignment;
+            var resultText = DisplayUtils.DisplayText(cMax, jobPermutation, jobAssignment);
+
+            txtResultSA.Text = $"--- CHOSEN INIT JOBS ---\r\n{initText}\r\n\r\n" +
+                                $"--- RESULT JOBS ---\r\n{resultText}";
+
+            EnableRunButtons();
         }
     }
 }

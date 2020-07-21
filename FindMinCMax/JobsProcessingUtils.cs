@@ -8,7 +8,7 @@ using FindMinCMax.Input;
 
 namespace FindMinCMax
 {
-    class Utils
+    class JobsProcessingUtils
     {
         private const int V = 1000000000;
 
@@ -33,7 +33,7 @@ namespace FindMinCMax
         private int numOfJobs;
         private int numOfStages;
 
-        public Utils()
+        public JobsProcessingUtils()
         {
             InitInputData();
             InitJobs(numOfJobs);
