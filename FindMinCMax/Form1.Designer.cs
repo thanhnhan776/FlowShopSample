@@ -138,7 +138,7 @@
             // 
             this.splitContainerInput.Panel2.Controls.Add(this.tabControl1);
             this.splitContainerInput.Size = new System.Drawing.Size(452, 546);
-            this.splitContainerInput.SplitterDistance = 61;
+            this.splitContainerInput.SplitterDistance = 60;
             this.splitContainerInput.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -156,7 +156,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(452, 61);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(452, 60);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // panel1
@@ -174,7 +174,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 33);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(113, 25);
+            this.panel2.Size = new System.Drawing.Size(113, 24);
             this.panel2.TabIndex = 1;
             // 
             // label2
@@ -201,7 +201,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(122, 33);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(327, 25);
+            this.panel4.Size = new System.Drawing.Size(327, 24);
             this.panel4.TabIndex = 3;
             // 
             // txtNumOfJobs
@@ -224,7 +224,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(452, 481);
+            this.tabControl1.Size = new System.Drawing.Size(452, 482);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -233,7 +233,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(444, 455);
+            this.tabPage1.Size = new System.Drawing.Size(444, 456);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Machines in stages";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -245,7 +245,7 @@
             this.txtMachines.Multiline = true;
             this.txtMachines.Name = "txtMachines";
             this.txtMachines.ReadOnly = true;
-            this.txtMachines.Size = new System.Drawing.Size(438, 449);
+            this.txtMachines.Size = new System.Drawing.Size(438, 450);
             this.txtMachines.TabIndex = 5;
             // 
             // tabPage2
@@ -254,7 +254,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(440, 388);
+            this.tabPage2.Size = new System.Drawing.Size(444, 456);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Eligibility";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -266,7 +266,7 @@
             this.txtEligibility.Multiline = true;
             this.txtEligibility.Name = "txtEligibility";
             this.txtEligibility.ReadOnly = true;
-            this.txtEligibility.Size = new System.Drawing.Size(434, 382);
+            this.txtEligibility.Size = new System.Drawing.Size(438, 450);
             this.txtEligibility.TabIndex = 7;
             // 
             // tabPage3
@@ -275,7 +275,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(440, 388);
+            this.tabPage3.Size = new System.Drawing.Size(444, 456);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Processing time";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -287,7 +287,7 @@
             this.txtProcessingTime.Multiline = true;
             this.txtProcessingTime.Name = "txtProcessingTime";
             this.txtProcessingTime.ReadOnly = true;
-            this.txtProcessingTime.Size = new System.Drawing.Size(434, 382);
+            this.txtProcessingTime.Size = new System.Drawing.Size(438, 450);
             this.txtProcessingTime.TabIndex = 8;
             // 
             // tabPage4
@@ -296,7 +296,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(440, 388);
+            this.tabPage4.Size = new System.Drawing.Size(444, 456);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Lag time";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -308,7 +308,7 @@
             this.txtLagTime.Multiline = true;
             this.txtLagTime.Name = "txtLagTime";
             this.txtLagTime.ReadOnly = true;
-            this.txtLagTime.Size = new System.Drawing.Size(434, 382);
+            this.txtLagTime.Size = new System.Drawing.Size(438, 450);
             this.txtLagTime.TabIndex = 9;
             // 
             // tabPage5
@@ -317,7 +317,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(440, 388);
+            this.tabPage5.Size = new System.Drawing.Size(444, 456);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Setup time";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -331,7 +331,7 @@
             this.txtSetupTime.Name = "txtSetupTime";
             this.txtSetupTime.ReadOnly = true;
             this.txtSetupTime.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtSetupTime.Size = new System.Drawing.Size(434, 382);
+            this.txtSetupTime.Size = new System.Drawing.Size(438, 450);
             this.txtSetupTime.TabIndex = 10;
             // 
             // splitContainerApp
@@ -411,11 +411,12 @@
             // txtResultBF
             // 
             this.txtResultBF.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtResultBF.Location = new System.Drawing.Point(5, 5);
+            this.txtResultBF.Location = new System.Drawing.Point(0, 0);
             this.txtResultBF.Multiline = true;
             this.txtResultBF.Name = "txtResultBF";
             this.txtResultBF.ReadOnly = true;
-            this.txtResultBF.Size = new System.Drawing.Size(358, 206);
+            this.txtResultBF.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtResultBF.Size = new System.Drawing.Size(368, 216);
             this.txtResultBF.TabIndex = 0;
             // 
             // splitContainerOutputBottom
@@ -449,11 +450,11 @@
             // txtResultSA
             // 
             this.txtResultSA.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtResultSA.Location = new System.Drawing.Point(10, 10);
+            this.txtResultSA.Location = new System.Drawing.Point(0, 0);
             this.txtResultSA.Multiline = true;
             this.txtResultSA.Name = "txtResultSA";
             this.txtResultSA.ReadOnly = true;
-            this.txtResultSA.Size = new System.Drawing.Size(348, 306);
+            this.txtResultSA.Size = new System.Drawing.Size(368, 326);
             this.txtResultSA.TabIndex = 1;
             // 
             // Form1

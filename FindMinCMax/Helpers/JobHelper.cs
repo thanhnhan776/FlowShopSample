@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using FindMinCMax.Entity;
 using FindMinCMax.Input;
+using FindMinCMax.Utils;
 
 namespace FindMinCMax.Helpers
 {
@@ -26,6 +29,7 @@ namespace FindMinCMax.Helpers
         public int ResultCmax = 1000000000;
         public int[] ResultJobPermutation;
         public int[][] ResultJobAssignments;
+        public List<Neighbor> Results { get; set; } = new List<Neighbor>();
 
         public JobHelper()
         {
@@ -173,18 +177,25 @@ namespace FindMinCMax.Helpers
             };
             var cMax = _utils.FindCMax();
 
+            var jobs = new Neighbor
+            {
+                Cmax = cMax,
+                JobsPermutation = X.ClonedInstance(),
+                JobsAssignment = JobAssignments.ClonedInstance()
+            };
+
             if (ResultCmax > cMax)
             {
                 ResultCmax = cMax;
-                ResultJobAssignments = JobAssignments.Select(row => row.Select(cell => cell).ToArray()).ToArray();
-                ResultJobPermutation = X.Select(cell => cell).ToArray();
-            }
+                ResultJobAssignments = JobAssignments.ClonedInstance();
+                ResultJobPermutation = X.ClonedInstance();
 
-            //PrintX();
-            //PrintJobAssignments();
-            //Console.WriteLine($@"Job assignment No. {JobAssignmentsCount}");
-            //Console.WriteLine($@"===> Cmax = {cMax}");
-            //Console.WriteLine();
+
+                Results = new List<Neighbor>(); // clear list alternative results
+            } else if (ResultCmax == cMax)
+            {
+                Results.Add(jobs); // add same job config for optimal Cmax
+            }
         }
 
         private void PrintJobAssignments()

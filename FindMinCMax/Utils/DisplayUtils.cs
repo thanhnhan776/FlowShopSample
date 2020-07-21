@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FindMinCMax.Helpers;
 
 namespace FindMinCMax.Utils
 {
@@ -124,6 +125,22 @@ namespace FindMinCMax.Utils
             display += $"Cmax: {cMax}\r\n\r\n";
             display += $"Jobs processing order:\r\n" +
                            $"\t  {string.Join(", ", jobPermutation)}\r\n\r\n";
+            display += $"Jobs assignment to machines each stage:\r\n";
+            for (var i = 0; i < jobAssignment.Length; ++i)
+            {
+                display += $"Stage {i + 1:00}:   {string.Join(", ", jobAssignment[i])}\r\n";
+            }
+
+            return display;
+        }
+
+        public static string DisplayText(this Neighbor neighbor)
+        {
+            var jobPermutation = neighbor.JobsPermutation;
+            var jobAssignment = neighbor.JobsAssignment;
+            var display = "";
+            display += $"Jobs processing order:\r\n" +
+                       $"\t  {string.Join(", ", jobPermutation)}\r\n\r\n";
             display += $"Jobs assignment to machines each stage:\r\n";
             for (var i = 0; i < jobAssignment.Length; ++i)
             {

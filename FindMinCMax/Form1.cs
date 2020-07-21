@@ -119,36 +119,7 @@ namespace FindMinCMax
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            return;
 
-
-            //Console.WriteLine($@"Result Cmax = {JobHelper.resultCmax}");
-            //for (var i = 0; i < 5; ++i)
-            //{
-            //    Console.Write($@"{JobHelper.resultJobPermutation[i]} ");
-            //}
-            //Console.WriteLine();
-            //for (var i = 0; i < 3; ++i)
-            //{
-            //    for (var j = 0; j < 5; ++j)
-            //    {
-            //        Console.Write($@"{JobHelper.resultJobAssignments[i][j]} ");
-            //    }
-            //    Console.WriteLine();
-            //}
-
-            //JobHelper.JobAssignments = new[]
-            //{
-            //    new []{1, 2, 2, 1, 0},
-            //    new []{2, 1, 0, 1, 1},
-            //    new []{1, 0, 1, 1, 1}
-            //};
-            //JobHelper.ProcessMachinesPermutation();
-            //JobHelper.GenerateJobAssignmentPermutation();
-
-            //Console.WriteLine(JobHelper.resultCmax);
-            //PrintJobsPermutation(JobHelper.resultJobPermutation);
-            //PrintJobAssignments(JobHelper.resultJobAssignments);
         }
 
         private static void PrintJobAssignments(int[][] jobsAssignment)
@@ -181,7 +152,17 @@ namespace FindMinCMax
             var cMax = jobHelper.ResultCmax;
             var jobPermutation = jobHelper.ResultJobPermutation;
             var jobAssignment = jobHelper.ResultJobAssignments;
-            txtResultBF.Text = DisplayUtils.DisplayText(cMax, jobPermutation, jobAssignment);
+
+            var displayResultText = DisplayUtils.DisplayText(cMax, jobPermutation, jobAssignment);
+            var displayAlternativeResultText = $"\r\n--- ALTERNATIVE RESULTS --- Found {jobHelper.Results.Count} ---\r\n";
+            for (var i = 0; i < jobHelper.Results.Count; ++i)
+            {
+                var result = jobHelper.Results[i];
+                displayAlternativeResultText += $"\r\n=== ({i+1}) ===\r\n" + result.DisplayText();
+            }
+
+
+            txtResultBF.Text = displayResultText + displayAlternativeResultText;
 
             EnableRunButtons();
         }
