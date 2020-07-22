@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FindMinCMax.Input;
 using FindMinCMax.Utils;
 
 namespace FindMinCMax.Helpers
 {
     public class SimulatedAnnealingAlgo
     {
+        private const int MAX_INT = 1000000000;
+        private const double TOLERANCE = 0.000001d;
+
         public int LoopCount { get; set; }
         public int NumOfJobs { get; set; }
 
@@ -28,8 +32,7 @@ namespace FindMinCMax.Helpers
         public void StartSimulating()
         {
             // STEP 1: Init
-            //var jobsPermutation = GetInitialJobsPermutation();
-            var jobsPermutation = GetRandomInitialJobsPermutation();
+            var jobsPermutation = GetInitialJobsPermutationUsingSPT();
             var jobs = new Neighbor(jobsPermutation);
             jobs.CalculateCmax();
             InitJobs = new Neighbor
@@ -57,7 +60,7 @@ namespace FindMinCMax.Helpers
                     // G(Sc) < (G(S0)
                     result = neighbor;
                     jobs = neighbor;
-                } 
+                }
                 else if (neighbor.Cmax < jobs.Cmax)
                 {
                     // G(S0) < G(Sc) < G(Sk)
@@ -83,49 +86,58 @@ namespace FindMinCMax.Helpers
             ResultJobAssignment = result.JobsAssignment;
         }
 
-        private int[] GetInitialJobsPermutation()
+        private int[] GetInitialJobsPermutationUsingSPT()
         {
-            var jp = new int[NumOfJobs];
+            var jobs = new List<AptJob>(NumOfJobs);
+
             for (var i = 0; i < NumOfJobs; ++i)
             {
-                jp[i] = i + 1;
+                jobs.Add(new AptJob { JobName = i + 1, APT = CalculateAPT(i + 1) });
             }
 
-            return jp;
+            jobs.Sort((jobA, jobB) => Math.Abs(jobA.APT - jobB.APT) < TOLERANCE
+                ? 0
+                : jobA.APT > jobB.APT ? 1 : -1);
+
+            return jobs.Select(job => job.JobName).ToArray();
         }
 
-        private int[] GetRandomInitialJobsPermutation()
+        /// <summary>
+        /// Calculate average processing time for the first stage of job <code>jobName</code>
+        /// </summary>
+        /// <param name="jobName"></param>
+        /// <returns>APT of the job</returns>
+        private double CalculateAPT(int jobName)
         {
-            var rand = new Random();
-            var isSelected = new bool[NumOfJobs];
-            var jobsPermutation = new int[NumOfJobs];
-            for (var i = 0; i < NumOfJobs; ++i)
+            var jobPosition = jobName - 1;
+            var stagePosition = 1 - 1; // stage 1, which has position zero in memory
+            var eligibility = InputData.Eligibility;
+            var processingTimes = InputData.ProcessingTimes;
+
+            var totalProcessingTime = 0d;
+            var numberOfMachines = eligibility[stagePosition][jobPosition].Length;
+
+            if (numberOfMachines == 0)
             {
-                isSelected[i] = false;
+                return 0; // prioritize not fungible job
             }
 
-            for (var i = 0; i < NumOfJobs; ++i)
+            for (var l = 0; l < numberOfMachines; ++l)
             {
-                var randIndex = rand.Next() % NumOfJobs;
-                while (isSelected[randIndex])
-                {
-                    randIndex = rand.Next() % NumOfJobs;
-                }
-
-                isSelected[randIndex] = true;
-                jobsPermutation[i] = randIndex + 1;
+                var machinePosition = eligibility[stagePosition][jobPosition][l] - 1;
+                totalProcessingTime += processingTimes[stagePosition][machinePosition][jobPosition];
             }
 
-            return jobsPermutation;
+            return totalProcessingTime / numberOfMachines;
         }
 
         private Neighbor GetBestNeighborOf(int[] jobsPermutation)
         {
-            var bestNeighbor = new Neighbor {Cmax = 1000000000};
+            var bestNeighbor = new Neighbor { Cmax = MAX_INT };
             for (var i = 0; i < jobsPermutation.Length - 1; ++i)
             {
                 var neighborJobs = GetNeighborJobs(jobsPermutation, i);
-                var neighbor = new Neighbor {JobsPermutation = neighborJobs};
+                var neighbor = new Neighbor { JobsPermutation = neighborJobs };
                 neighbor.CalculateCmax();
 
                 if (neighbor.Cmax < bestNeighbor.Cmax)
@@ -182,7 +194,7 @@ namespace FindMinCMax.Helpers
 
         public Neighbor()
         {
-            
+
         }
 
         public Neighbor(int[] jobsPermutation)
@@ -194,7 +206,7 @@ namespace FindMinCMax.Helpers
         {
             var jobHelper = new JobHelper
             {
-                NumOfJobs = JobsPermutation.Length, 
+                NumOfJobs = JobsPermutation.Length,
                 X = JobsPermutation
             };
             jobHelper.GenerateJobAssignmentPermutation();
@@ -212,5 +224,11 @@ namespace FindMinCMax.Helpers
             //    Console.WriteLine();
             //}
         }
+    }
+
+    class AptJob
+    {
+        public int JobName { get; set; }
+        public double APT { get; set; }
     }
 }
