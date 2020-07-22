@@ -49,8 +49,8 @@ namespace FindMinCMax.Helpers
 
             for (var k = 0; k < LoopCount; ++k)
             {
-                // STEP 2: Evaluate nearby region
-                var neighbor = GetBestNeighborOf(jobsPermutation);
+                // STEP 2: Evaluate nearby region of previous best pick
+                var neighbor = GetBestNeighborOf(jobs.JobsPermutation);
 
                 if (neighbor.Cmax < result.Cmax)
                 {
@@ -143,7 +143,7 @@ namespace FindMinCMax.Helpers
 
         private int[] GetNeighborJobs(int[] host, int swapIndex)
         {
-            var neighbor = host.Select(cell => cell).ToArray();;
+            var neighbor = host.ClonedInstance();
             var tmp = neighbor[swapIndex];
             neighbor[swapIndex] = neighbor[swapIndex + 1];
             neighbor[swapIndex + 1] = tmp;
