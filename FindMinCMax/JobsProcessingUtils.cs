@@ -21,34 +21,43 @@ namespace FindMinCMax
             new[] {0, 1, 1, 1, 1}
         }; // row: stages, column position: corresponding to job permutation, cell: assigned machine to a job at a stage
 
-        private int[][] machines;
-        public int[][][] eligibility;
-        private int[][][] processingTimes;
-        private int[][][] lagTimes;
-        private int[][][][] setupTimes;
+        private int[][] _machines;
+        private int[][][] _eligibility;
+        private int[][][] _processingTimes;
+        private int[][][] _lagTimes;
+        private int[][][][] _setupTimes;
 
         private List<Job> Jobs;
         private List<Stage> Stages;
 
-        private int numOfJobs;
-        private int numOfStages;
+        private int _numOfJobs;
+        private int _numOfStages;
 
         public JobsProcessingUtils()
         {
             InitInputData();
-            InitJobs(numOfJobs);
-            InitStagesAndTheirMachines(numOfStages);
+            InitJobs(InputData.NumOfJobs);
+            InitStagesAndTheirMachines(_numOfStages);
+        }
+
+        public JobsProcessingUtils(int numOfJobs)
+        {
+            InitInputData();
+            _numOfJobs = numOfJobs;
+
+            InitJobs(InputData.NumOfJobs);
+            InitStagesAndTheirMachines(_numOfStages);
         }
 
         private void InitInputData()
         {
-            numOfStages = InputData.NumOfStages;
-            numOfJobs = InputData.NumOfJobs;
-            machines = InputData.Machines;
-            eligibility = InputData.Eligibility;
-            processingTimes = InputData.ProcessingTimes;
-            lagTimes = InputData.LagTimes;
-            setupTimes = InputData.SetupTimes;
+            _numOfStages = InputData.NumOfStages;
+            _numOfJobs = InputData.NumOfJobs;
+            _machines = InputData.Machines;
+            _eligibility = InputData.Eligibility;
+            _processingTimes = InputData.ProcessingTimes;
+            _lagTimes = InputData.LagTimes;
+            _setupTimes = InputData.SetupTimes;
         }
 
         private void InitJobs(int jobsCount)
@@ -65,12 +74,12 @@ namespace FindMinCMax
             Stages = new List<Stage>(stagesCount);
             for (var i = 0; i < stagesCount; ++i)
             {
-                Stages.Add(new Stage { Id = i, Machines = new List<Machine>(machines[i].Length) });
+                Stages.Add(new Stage { Id = i, Machines = new List<Machine>(_machines[i].Length) });
             }
 
             for (var i = 0; i < stagesCount; ++i)
             {
-                var machinesCount = machines[i].Length;
+                var machinesCount = _machines[i].Length;
                 for (var l = 0; l < machinesCount; ++l)
                 {
                     Stages[i].Machines.Add(new Machine { Id = l, AvailableTime = 0, CurrentJobPosition = -1 });
@@ -81,12 +90,12 @@ namespace FindMinCMax
         public int FindCMax()
         {
             var cMax = 0;
-            for (var k = 0; k < numOfJobs; ++k)
+            for (var k = 0; k < _numOfJobs; ++k)
             {
                 // find total processing time of job k
                 var jobId = jobsPermutation[k];
                 var jobPosition = jobId - 1;
-                for (var i = 0; i < numOfStages; ++i)
+                for (var i = 0; i < _numOfStages; ++i)
                 {
                     // 1. BEFORE PROCESSING
                     var machineId = jobAssignments[i][k];
@@ -95,13 +104,13 @@ namespace FindMinCMax
                         continue;
                     }
                     var machinePosition = machineId - 1;
-                    var processingTime = processingTimes[i][machinePosition][jobPosition];
+                    var processingTime = _processingTimes[i][machinePosition][jobPosition];
 
                     var setupTime = 0;
                     var previousJobPosition = Stages[i].Machines[machinePosition].CurrentJobPosition;
                     if (previousJobPosition >= 0)
                     {
-                        setupTime = Math.Max(setupTimes[i][machinePosition][previousJobPosition][jobPosition], 0);
+                        setupTime = Math.Max(_setupTimes[i][machinePosition][previousJobPosition][jobPosition], 0);
                     }
 
                     var lagTime = 0;
@@ -110,7 +119,7 @@ namespace FindMinCMax
                         // not the first stage
                         var previousMachinePosition = jobAssignments[i - 1][k] - 1;
                         lagTime = previousMachinePosition >= 0
-                                    ? lagTimes[i - 1][previousMachinePosition][jobPosition]
+                                    ? _lagTimes[i - 1][previousMachinePosition][jobPosition]
                                     : 0;
                     }
 

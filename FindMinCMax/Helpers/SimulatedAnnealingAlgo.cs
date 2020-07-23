@@ -32,7 +32,7 @@ namespace FindMinCMax.Helpers
         public void StartSimulating()
         {
             // STEP 1: Init
-            var jobsPermutation = GetInitialJobsPermutationUsingSPT();
+            var jobsPermutation = GetInitialJobsPermutationUsingNEH();
             var jobs = new Neighbor(jobsPermutation);
             jobs.CalculateCmax();
             InitJobs = new Neighbor
@@ -89,28 +89,91 @@ namespace FindMinCMax.Helpers
         private int[] GetInitialJobsPermutationUsingSPT()
         {
             var jobs = new List<AptJob>(NumOfJobs);
-
+            var stageName = 1;
             for (var i = 0; i < NumOfJobs; ++i)
             {
-                jobs.Add(new AptJob { JobName = i + 1, APT = CalculateAPT(i + 1) });
+                jobs.Add(new AptJob { JobName = i + 1, APT = CalculateAPT(stageName, i + 1) });
             }
 
             jobs.Sort((jobA, jobB) => Math.Abs(jobA.APT - jobB.APT) < TOLERANCE
                 ? 0
                 : jobA.APT > jobB.APT ? 1 : -1);
 
-            return jobs.Select(job => job.JobName).ToArray();
+            return jobs.ToJobNameArray();
+        }
+
+        private int[] GetInitialJobsPermutationUsingNEH()
+        {
+            var sortedJobs = GetSortedJobsByTotalAPT();
+            if (NumOfJobs < 2)
+            {
+                return sortedJobs.ToJobNameArray();
+            }
+
+            var currentJobs = new List<int> { sortedJobs[0].JobName };
+            for (var j = 1; j < NumOfJobs; ++j)
+            {
+                var nextJob = sortedJobs[j].JobName;
+                currentJobs = PutJobToTheBestPosition(currentJobs, nextJob);
+            }
+
+            return currentJobs.ToArray();
+        }
+
+        private List<int> PutJobToTheBestPosition(List<int> jobs, int jobName)
+        {
+            var jobPermutation = jobs.ClonedInstance().ToList();
+            jobPermutation.Insert(0, jobName);
+            var bestAppendedJobs = new Neighbor { JobsPermutation = jobPermutation.ToArray() };
+            bestAppendedJobs.CalculateCmax();
+            for (var position = 1; position <= jobs.Count; ++position)
+            {
+                // Insert new job to the permutation at position
+                jobPermutation = jobs.ClonedInstance().ToList();
+                jobPermutation.Insert(position, jobName);
+
+                var appendedJobs = new Neighbor { JobsPermutation = jobPermutation.ToArray() };
+                appendedJobs.CalculateCmax();
+
+                // Check if the inserted permutation better
+                if (bestAppendedJobs.Cmax > appendedJobs.Cmax)
+                {
+                    bestAppendedJobs = appendedJobs;
+                }
+            }
+            return bestAppendedJobs.JobsPermutation.ToList();
+        }
+
+        private List<AptJob> GetSortedJobsByTotalAPT()
+        {
+            var jobs = new List<AptJob>(NumOfJobs);
+            for (var j = 0; j < NumOfJobs; ++j)
+            {
+                var job = new AptJob { JobName = j + 1, TotalAPT = 0 };
+                for (var i = 0; i < InputData.NumOfStages; ++i)
+                {
+                    var stageName = i + 1;
+                    job.TotalAPT += CalculateAPT(stageName, job.JobName);
+                }
+                jobs.Add(job);
+            }
+            jobs.Sort((jobA, jobB) =>
+                Math.Abs(jobA.TotalAPT - jobB.TotalAPT) < TOLERANCE
+                  ? 0
+                  : jobA.TotalAPT > jobB.TotalAPT ? 1 : -1);
+            return jobs;
         }
 
         /// <summary>
-        /// Calculate average processing time for the first stage of job <code>jobName</code>
+        /// Calculate average processing time for the stage <code>stageName</code> of job <code>jobName</code>
         /// </summary>
+        /// <param name="stageName"></param>
         /// <param name="jobName"></param>
         /// <returns>APT of the job</returns>
-        private double CalculateAPT(int jobName)
+        private double CalculateAPT(int stageName, int jobName)
         {
             var jobPosition = jobName - 1;
-            var stagePosition = 1 - 1; // stage 1, which has position zero in memory
+            var stagePosition = stageName - 1; 
             var eligibility = InputData.Eligibility;
             var processingTimes = InputData.ProcessingTimes;
 
@@ -209,7 +272,7 @@ namespace FindMinCMax.Helpers
                 NumOfJobs = JobsPermutation.Length,
                 X = JobsPermutation
             };
-            jobHelper.GenerateJobAssignmentPermutation();
+            jobHelper.ProcessPermutationX();
 
             JobsAssignment = jobHelper.ResultJobAssignments.ClonedInstance();
             Cmax = jobHelper.ResultCmax;
@@ -230,5 +293,14 @@ namespace FindMinCMax.Helpers
     {
         public int JobName { get; set; }
         public double APT { get; set; }
+        public double TotalAPT { get; set; }
+    }
+
+    static class AptJobHelper
+    {
+        public static int[] ToJobNameArray(this List<AptJob> jobs)
+        {
+            return jobs.Select(job => job.JobName).ToArray();
+        }
     }
 }

@@ -85,7 +85,10 @@ namespace FindMinCMax.Helpers
             Console.WriteLine();
         }
 
-        private void ProcessPermutationX()
+        /// <summary>
+        /// Process a specific job flow, find the best machine assignment to this job flow
+        /// </summary>
+        public void ProcessPermutationX()
         {
             _utils.jobsPermutation = X;
             GenerateJobAssignmentPermutation();
@@ -103,7 +106,7 @@ namespace FindMinCMax.Helpers
             NumOfPermutation = 0;
         }
 
-        public void GenerateJobAssignmentPermutation()
+        private void GenerateJobAssignmentPermutation()
         {
             InitJobAssignmentPermutation();
             PermuteAssignments(0, 0);
@@ -114,16 +117,17 @@ namespace FindMinCMax.Helpers
             JobAssignmentsCount = 0;
             IsMachineAvailable = new bool[_numOfStages][][];
             JobAssignments = new int[_numOfStages][];
+            var maxNumOfJobs = InputData.NumOfJobs;
             for (var i = 0; i < _numOfStages; ++i)
             {
-                IsMachineAvailable[i] = new bool[NumOfJobs][];
-                JobAssignments[i] = new int[NumOfJobs];
-                for (var j = 0; j < NumOfJobs; ++j)
+                IsMachineAvailable[i] = new bool[maxNumOfJobs][];
+                JobAssignments[i] = new int[maxNumOfJobs];
+                for (var j = 0; j < maxNumOfJobs; ++j)
                 {
                     JobAssignments[i][j] = 0;
-                    var numOfMachines = _eligibility[i][j].Length;
-                    IsMachineAvailable[i][j] = new bool[numOfMachines];
-                    for (var l = 0; l < numOfMachines; ++l)
+                    var maxNumOfMachines = InputData.MaxNumOfMachinesEachStage;
+                    IsMachineAvailable[i][j] = new bool[maxNumOfMachines];
+                    for (var l = 0; l < maxNumOfMachines; ++l)
                     {
                         IsMachineAvailable[i][j][l] = true;
                     }
@@ -170,7 +174,7 @@ namespace FindMinCMax.Helpers
         public void ProcessMachinesPermutation()
         {
             //PrintJobAssignments();
-            _utils = new JobsProcessingUtils
+            _utils = new JobsProcessingUtils(X.Length)
             {
                 jobsPermutation = X,
                 jobAssignments = JobAssignments
@@ -192,7 +196,8 @@ namespace FindMinCMax.Helpers
 
 
                 Results = new List<Neighbor>(); // clear list alternative results
-            } else if (ResultCmax == cMax)
+            }
+            else if (ResultCmax == cMax)
             {
                 Results.Add(jobs); // add same job config for optimal Cmax
             }
