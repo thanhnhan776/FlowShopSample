@@ -12,81 +12,11 @@ namespace FindMinCMax
     {
         private int numOfStages = 3;
         private int numOfJobs = 5;
-        private int[][] machines =
-        {
-            new[] {1, 2},
-            new[] {1, 2},
-            new[] {1}
-        }; 
-        private int[][][] eligibility =
-        {
-            new[] {new[] {1, 2}, new[] {1, 2}, new int[] { }, new[] {2}, new[] {1, 2}},
-            new[] {new[] {2}, new[] {1, 2}, new[] {1}, new int[] { }, new[] {1, 2}},
-            new[] {new[] {1}, new int[]{}, new[] {1}, new[] {1}, new[] {1}}
-        };
-        private int[][][] processingTimes =
-        {
-            new[] {new[] {10, 6, 0, 0, 11}, new[] {15, 9, 0, 10, 14}},
-            new[] {new[] {0, 11, 9, 0, 6}, new[] {8, 4, 0, 0, 12}},
-            new[] {new[] {6, 0, 8, 6, 3}}
-        }; 
-        private int[][][] lagTimes =
-        {
-            new []{new []{10, 2, 0, 0, -5}, new []{2, -2, 0, 1, -6} },
-            new []{new []{0, 0, 3, 0, -3}, new []{-4, 0, 0, 0, 8} }
-        };
-        private int[][][][] setupTimes =
-        {
-            new []
-            {
-                new []
-                {
-                    new []{-1, 3, -1, -1, 4},
-                    new []{4, -1, -1, -1, 1},
-                    new []{-1, -1, -1, -1, -1},
-                    new []{-1, -1, -1, -1, -1},
-                    new []{6, -1, -1, -1, -1}
-                },
-                new []
-                {
-                    new []{-1, 6, -1, 8, 2},
-                    new []{5, -1, -1, 6, 4},
-                    new []{-1, -1, -1, -1, -1},
-                    new [] {8, -1, -1, -1, 2},
-                    new []{10, -1, -1, 4, -1}
-                }
-            },
-            new []
-            {
-                new []
-                {
-                    new []{-1, -1, -1, -1, -1},
-                    new []{-1, -1, 6, -1, 4},
-                    new []{-1, 8, -1, -1, 5},
-                    new []{-1, -1, -1, -1, -1},
-                    new []{-1, -1 -1, -1, -1}
-                },
-                new []
-                {
-                    new []{-1, 6, -1, -1, 6},
-                    new []{5, -1, -1, -1, 2},
-                    new []{-1, -1, -1, -1, -1},
-                    new []{-1, -1, -1, -1, -1},
-                    new []{4, -1, -1, -1, -1}
-                }
-            },
-            new []
-            {
-                new []
-                {
-                    new []{-1, -1, 6, 3, 9},
-                    new []{-1, -1, -1, -1, -1},
-                    new []{4, -1, -1, 1, 8},
-                    new []{5, -1, -1, -1, 2},
-                    new []{2, -1, -1, 6, -1 }
-                }
-            }
-        };
+        private int[][] machines;
+        private int[][][] eligibility;
+        private int[][][] processingTimes;
+        private int[][][] lagTimes;
+        private int[][][][] setupTimes;
         public Form1()
         {
             InitializeComponent();
@@ -96,13 +26,13 @@ namespace FindMinCMax
 
         private void InitInputData()
         {
-            InputData.NumOfStages = numOfStages;
-            InputData.NumOfJobs = numOfJobs;
-            InputData.Machines = machines;
-            InputData.Eligibility = eligibility;
-            InputData.ProcessingTimes = processingTimes;
-            InputData.LagTimes = lagTimes;
-            InputData.SetupTimes = setupTimes;
+            numOfStages = InputData.NumOfStages;
+            numOfJobs = InputData.NumOfJobs;
+            machines = InputData.Machines;
+            eligibility = InputData.Eligibility;
+            processingTimes = InputData.ProcessingTimes;
+            lagTimes = InputData.LagTimes;
+            setupTimes = InputData.SetupTimes;
         }
 
         private void InitDisplayInputData()
@@ -158,7 +88,7 @@ namespace FindMinCMax
             for (var i = 0; i < jobHelper.Results.Count; ++i)
             {
                 var result = jobHelper.Results[i];
-                displayAlternativeResultText += $"\r\n=== ({i+1}) ===\r\n" + result.DisplayText();
+                displayAlternativeResultText += $"\r\n=== ({i + 1}) ===\r\n" + result.DisplayText();
             }
 
 
@@ -179,7 +109,7 @@ namespace FindMinCMax
 
             var sa = new SimulatedAnnealingAlgo
             {
-                NumOfJobs = InputData.NumOfJobs, 
+                NumOfJobs = InputData.NumOfJobs,
                 LoopCount = 3
             };
             sa.StartSimulating();
