@@ -20,6 +20,7 @@ namespace FindMinCMax
         public Form1()
         {
             InitializeComponent();
+            var errorMessage = FileInput.LoadInputData();
             InitInputData();
             InitDisplayInputData();
         }
