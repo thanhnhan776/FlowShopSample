@@ -10,14 +10,23 @@ namespace FindMinCMax.Utils
 {
     public static class DataProcessingUtils
     {
-        public static int[][] ClonedInstance(this IEnumerable<int[]> array)
+        public static int[] ClonedInstance(this IEnumerable<int> array)
+        {
+            return array.Select(cell => cell).ToArray();
+        }
+        public static int[][] ClonedInstance(this IEnumerable<IEnumerable<int>> array)
         {
             return array.Select(row => row.ClonedInstance()).ToArray();
         }
 
-        public static int[] ClonedInstance(this IEnumerable<int> array)
+        public static int[][][] ClonedInstance(this IEnumerable<IEnumerable<IEnumerable<int>>> array)
         {
-            return array.Select(cell => cell).ToArray();
+            return array.Select(row => row.ClonedInstance()).ToArray();
+        }
+
+        public static int[][][][] ClonedInstance(this IEnumerable<IEnumerable<IEnumerable<IEnumerable<int>>>> array)
+        {
+            return array.Select(row => row.ClonedInstance()).ToArray();
         }
 
         public static int ToInt(this string value, int defaultValue = 0)
@@ -28,9 +37,15 @@ namespace FindMinCMax.Utils
         public static int GetCellIntValue(this ISheet sheet, WorkbookCell cellIndex, int defaultValue = 0)
         {
             var cell = sheet.GetRow(cellIndex.RowIndex).GetCell(cellIndex.ColIndex);
-            return cell.CellType != CellType.Blank
+            return cell != null && cell.CellType != CellType.Blank
                 ? (int) cell.NumericCellValue
                 : defaultValue;
+        }
+
+        public static int GetCellIntValue(this ISheet sheet, int rowIndex, int colIndex, int defaultValue = 0)
+        {
+            var cell = new WorkbookCell { RowIndex = rowIndex, ColIndex = colIndex };
+            return GetCellIntValue(sheet, cell, defaultValue);
         }
     }
 }

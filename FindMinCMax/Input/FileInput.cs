@@ -31,6 +31,7 @@ namespace FindMinCMax.Input
 
                 LoadStageAndJob();
                 LoadMachines();
+                LoadEligibility();
 
                 return "";
             }
@@ -66,7 +67,40 @@ namespace FindMinCMax.Input
                 }
             }
 
-            InputData.Machines = machines;
+            InputData.Machines = machines.ClonedInstance();
+        }
+
+        private static void LoadEligibility()
+        {
+            var eligibilitySheet = _wb.GetSheet(FileInputConstants.EligibilitySheet);
+            var startCell = _constants.EligibilityCellStart;
+            var eligibility = new int[InputData.NumOfStages][][];
+            for (var i = 0; i < InputData.NumOfStages; ++i)
+            {
+                // loop through stages
+                eligibility[i] = new int[InputData.NumOfJobs][];
+                var rowIndex = startCell.RowIndex + InputData.NumOfJobs * i;
+                for (var j = 0; j < InputData.NumOfJobs; ++j)
+                {
+                    // loop through jobs
+                    var colIndex = startCell.ColIndex;
+                    var machine = eligibilitySheet.GetCellIntValue(rowIndex, colIndex, FileInputConstants.EmptyCellValue);
+                    var machines = new List<int>();
+
+                    // read eligibility machines
+                    while (machine != FileInputConstants.EmptyCellValue)
+                    {
+                        machines.Add(machine);
+                        machine = eligibilitySheet.GetCellIntValue(rowIndex, ++colIndex,
+                            FileInputConstants.EmptyCellValue);
+                    }
+
+                    eligibility[i][j] = machines.ToArray();
+                    ++rowIndex;
+                }
+            }
+
+            InputData.Eligibility = eligibility.ClonedInstance();
         }
     }
 }

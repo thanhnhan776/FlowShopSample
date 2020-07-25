@@ -20,7 +20,6 @@ namespace FindMinCMax
         public Form1()
         {
             InitializeComponent();
-            var errorMessage = FileInput.LoadInputData();
             InitInputData();
             InitDisplayInputData();
         }
@@ -45,7 +44,9 @@ namespace FindMinCMax
             txtProcessingTime.Text = processingTimes.DisplayText(DisplayTypes.ProcessingTime);
             txtLagTime.Text = lagTimes.DisplayText(DisplayTypes.LagTime);
             txtSetupTime.Text = setupTimes.DisplayText();
-
+           
+            // update UI
+            //Application.DoEvents();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -127,6 +128,30 @@ namespace FindMinCMax
                                 $"--- RESULT JOBS ---\r\n{resultText}";
 
             EnableRunButtons();
+        }
+
+        private void btnLoadFileInput_Click(object sender, EventArgs e)
+        {
+            btnLoadFileInput.Text = @"Loading...";
+            btnLoadFileInput.Enabled = false;
+            txtFileInput.ReadOnly = true;
+
+            var errorMessage = FileInput.LoadInputData();
+            if (errorMessage != "")
+            {
+                MessageBox.Show(errorMessage, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                InitInputData();
+                InitDisplayInputData();
+                MessageBox.Show($@"Load data from file {txtFileInput.Text} successfully!", @"Success", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            btnLoadFileInput.Text = @"Load";
+            btnLoadFileInput.Enabled = true;
+            txtFileInput.ReadOnly = false;
         }
     }
 }

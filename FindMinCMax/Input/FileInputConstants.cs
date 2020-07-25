@@ -15,11 +15,12 @@ namespace FindMinCMax.Input
         public const string LagTimesSheet = "Lag times";
         public const string SetupTimesSheet = "Setup times";
 
-        public readonly int EmptyCellValue = -1;
+        public const int EmptyCellValue = -1;
 
         public readonly WorkbookCell NumOfStagesCellIndex = new WorkbookCell { RowIndex = 1, ColIndex = 1 };
         public readonly WorkbookCell NumOfJobsCellIndex = new WorkbookCell { RowIndex = 2, ColIndex = 1 };
         public readonly WorkbookCell NumOfMachinesCellStart = new WorkbookCell { RowIndex = 2, ColIndex = 1 };
+        public readonly WorkbookCell EligibilityCellStart = new WorkbookCell { RowIndex = 2, ColIndex = 2 };
     }
 
     public class WorkbookCell

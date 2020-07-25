@@ -59,6 +59,10 @@
             this.splitContainerOutputBottom = new System.Windows.Forms.SplitContainer();
             this.btnRunSA = new System.Windows.Forms.Button();
             this.txtResultSA = new System.Windows.Forms.TextBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtFileInput = new System.Windows.Forms.TextBox();
+            this.btnLoadFileInput = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerInput)).BeginInit();
             this.splitContainerInput.Panel1.SuspendLayout();
@@ -92,12 +96,17 @@
             this.splitContainerOutputBottom.Panel1.SuspendLayout();
             this.splitContainerOutputBottom.Panel2.SuspendLayout();
             this.splitContainerOutputBottom.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 4);
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(90, 13);
             this.label1.TabIndex = 0;
@@ -138,7 +147,7 @@
             // 
             this.splitContainerInput.Panel2.Controls.Add(this.tabControl1);
             this.splitContainerInput.Size = new System.Drawing.Size(452, 546);
-            this.splitContainerInput.SplitterDistance = 60;
+            this.splitContainerInput.SplitterDistance = 77;
             this.splitContainerInput.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -146,41 +155,44 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26.42857F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 73.57143F));
+            this.tableLayoutPanel1.Controls.Add(this.txtNumOfJobs, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel3, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel4, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(452, 60);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(452, 77);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.label3);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(113, 24);
+            this.panel1.Size = new System.Drawing.Size(113, 20);
             this.panel1.TabIndex = 0;
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.label2);
+            this.panel2.Controls.Add(this.label1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(3, 33);
+            this.panel2.Location = new System.Drawing.Point(3, 29);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(113, 24);
+            this.panel2.Size = new System.Drawing.Size(113, 20);
             this.panel2.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 5);
+            this.label2.Location = new System.Drawing.Point(3, 52);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(78, 13);
             this.label2.TabIndex = 2;
@@ -188,26 +200,26 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.txtNumOfStages);
+            this.panel3.Controls.Add(this.splitContainer1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(122, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(327, 24);
+            this.panel3.Size = new System.Drawing.Size(327, 20);
             this.panel3.TabIndex = 2;
             // 
             // panel4
             // 
-            this.panel4.Controls.Add(this.txtNumOfJobs);
+            this.panel4.Controls.Add(this.txtNumOfStages);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(122, 33);
+            this.panel4.Location = new System.Drawing.Point(122, 29);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(327, 24);
+            this.panel4.Size = new System.Drawing.Size(327, 20);
             this.panel4.TabIndex = 3;
             // 
             // txtNumOfJobs
             // 
             this.txtNumOfJobs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtNumOfJobs.Location = new System.Drawing.Point(0, 0);
+            this.txtNumOfJobs.Location = new System.Drawing.Point(122, 55);
             this.txtNumOfJobs.Name = "txtNumOfJobs";
             this.txtNumOfJobs.ReadOnly = true;
             this.txtNumOfJobs.Size = new System.Drawing.Size(327, 20);
@@ -224,7 +236,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(452, 482);
+            this.tabControl1.Size = new System.Drawing.Size(452, 465);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -233,7 +245,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(444, 456);
+            this.tabPage1.Size = new System.Drawing.Size(444, 439);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Machines in stages";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -245,7 +257,7 @@
             this.txtMachines.Multiline = true;
             this.txtMachines.Name = "txtMachines";
             this.txtMachines.ReadOnly = true;
-            this.txtMachines.Size = new System.Drawing.Size(438, 450);
+            this.txtMachines.Size = new System.Drawing.Size(438, 433);
             this.txtMachines.TabIndex = 5;
             // 
             // tabPage2
@@ -457,6 +469,53 @@
             this.txtResultSA.Size = new System.Drawing.Size(368, 326);
             this.txtResultSA.TabIndex = 1;
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.txtFileInput);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.btnLoadFileInput);
+            this.splitContainer1.Size = new System.Drawing.Size(327, 20);
+            this.splitContainer1.SplitterDistance = 252;
+            this.splitContainer1.TabIndex = 0;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label3.Location = new System.Drawing.Point(0, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(94, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Input data from file";
+            // 
+            // txtFileInput
+            // 
+            this.txtFileInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtFileInput.Location = new System.Drawing.Point(0, 0);
+            this.txtFileInput.Name = "txtFileInput";
+            this.txtFileInput.Size = new System.Drawing.Size(252, 20);
+            this.txtFileInput.TabIndex = 0;
+            this.txtFileInput.Text = "FlowShopInputData.xlsx";
+            // 
+            // btnLoadFileInput
+            // 
+            this.btnLoadFileInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnLoadFileInput.Location = new System.Drawing.Point(0, 0);
+            this.btnLoadFileInput.Name = "btnLoadFileInput";
+            this.btnLoadFileInput.Size = new System.Drawing.Size(71, 20);
+            this.btnLoadFileInput.TabIndex = 0;
+            this.btnLoadFileInput.Text = "Load";
+            this.btnLoadFileInput.UseVisualStyleBackColor = true;
+            this.btnLoadFileInput.Click += new System.EventHandler(this.btnLoadFileInput_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -473,12 +532,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerInput)).EndInit();
             this.splitContainerInput.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.tabControl1.ResumeLayout(false);
@@ -511,6 +570,11 @@
             this.splitContainerOutputBottom.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerOutputBottom)).EndInit();
             this.splitContainerOutputBottom.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -547,6 +611,10 @@
         private System.Windows.Forms.Button btnRunSA;
         private System.Windows.Forms.TextBox txtResultBF;
         private System.Windows.Forms.TextBox txtResultSA;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.TextBox txtFileInput;
+        private System.Windows.Forms.Button btnLoadFileInput;
     }
 }
 
