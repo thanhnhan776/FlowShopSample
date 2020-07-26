@@ -11,7 +11,7 @@ namespace FindMinCMax.Helpers
     public class JobHelper
     {
         public int NumOfJobs { get; set; } = 0;
-        public int NumOfPermutation { get; set; }
+        public int JobPermutationCount { get; set; }
         private bool[] IsAvailable { get; set; }
 
         /**
@@ -56,7 +56,7 @@ namespace FindMinCMax.Helpers
         {
             if (i == NumOfJobs)
             {
-                ++NumOfPermutation;
+                ++JobPermutationCount;
                 //PrintX();
                 ProcessPermutationX();
             }
@@ -77,7 +77,7 @@ namespace FindMinCMax.Helpers
 
         private void PrintX()
         {
-            Console.Write($@"{NumOfPermutation}: ");
+            Console.Write($@"{JobPermutationCount}: ");
             for (var i = 0; i < NumOfJobs; ++i)
             {
                 Console.Write($@"{X[i]} ");
@@ -103,13 +103,14 @@ namespace FindMinCMax.Helpers
             }
 
             X = new int[NumOfJobs];
-            NumOfPermutation = 0;
+            JobPermutationCount = 0;
         }
 
         private void GenerateJobAssignmentPermutation()
         {
             InitJobAssignmentPermutation();
             PermuteAssignments(0, 0);
+            Console.WriteLine(JobAssignmentsCount);
         }
 
         private void InitJobAssignmentPermutation()

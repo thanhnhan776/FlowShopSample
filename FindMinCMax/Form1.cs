@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using FindMinCMax.Helpers;
 using FindMinCMax.Input;
 using FindMinCMax.Utils;
+using Humanizer;
 
 namespace FindMinCMax
 {
@@ -17,6 +19,9 @@ namespace FindMinCMax
         private int[][][] processingTimes;
         private int[][][] lagTimes;
         private int[][][][] setupTimes;
+
+        private readonly Stopwatch _watch = new Stopwatch();
+
         public Form1()
         {
             InitializeComponent();
@@ -44,7 +49,7 @@ namespace FindMinCMax
             txtProcessingTime.Text = processingTimes.DisplayText(DisplayTypes.ProcessingTime);
             txtLagTime.Text = lagTimes.DisplayText(DisplayTypes.LagTime);
             txtSetupTime.Text = setupTimes.DisplayText();
-           
+
             // update UI
             //Application.DoEvents();
         }
@@ -80,6 +85,9 @@ namespace FindMinCMax
             EnableRunButtons(false);
             try
             {
+                _watch.Restart();
+                _watch.Start();
+
                 var jobHelper = new JobHelper();
                 jobHelper.GeneratePermutation();
                 var cMax = jobHelper.ResultCmax;
@@ -97,6 +105,11 @@ namespace FindMinCMax
 
 
                 txtResultBF.Text = displayResultText + displayAlternativeResultText;
+
+                _watch.Stop();
+                var time = TimeSpan.FromMilliseconds(_watch.ElapsedMilliseconds).Humanize(4);
+                MessageBox.Show($@"Execution time: {time}.", "Success", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -119,10 +132,14 @@ namespace FindMinCMax
             EnableRunButtons(false);
             try
             {
+                _watch.Restart();
+                _watch.Start();
+
+                var loopCount = txtSALoopCount.Text.ToInt();
                 var sa = new SimulatedAnnealingAlgo
                 {
                     NumOfJobs = InputData.NumOfJobs,
-                    LoopCount = 3
+                    LoopCount = loopCount
                 };
                 sa.StartSimulating();
 
@@ -136,6 +153,11 @@ namespace FindMinCMax
 
                 txtResultSA.Text = $"--- CHOSEN INIT JOBS ---\r\n{initText}\r\n\r\n" +
                                    $"--- RESULT JOBS ---\r\n{resultText}";
+
+                _watch.Stop();
+                var time = TimeSpan.FromMilliseconds(_watch.ElapsedMilliseconds).Humanize(4);
+                MessageBox.Show($@"Execution time: {time}.", "Success", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -154,6 +176,7 @@ namespace FindMinCMax
             btnLoadFileInput.Enabled = false;
             txtFileInput.ReadOnly = true;
 
+            FileInput.FilePath = txtFileInput.Text;
             var errorMessage = FileInput.LoadInputData();
             if (errorMessage != "")
             {
@@ -163,13 +186,25 @@ namespace FindMinCMax
             {
                 InitInputData();
                 InitDisplayInputData();
-                MessageBox.Show($@"Load data from file {txtFileInput.Text} successfully!", @"Success", 
+                MessageBox.Show($@"Load data from file {txtFileInput.Text} successfully!", @"Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             btnLoadFileInput.Text = @"Load";
             btnLoadFileInput.Enabled = true;
             txtFileInput.ReadOnly = false;
+        }
+
+        private void btnRunBFInfo_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(DisplayUtils.BruteForceInfo, @"Run all cases",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnRunSAInfo_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(DisplayUtils.SimulatedAnnealingInfo, @"Run all cases",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

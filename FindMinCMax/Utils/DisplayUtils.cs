@@ -17,6 +17,27 @@ namespace FindMinCMax.Utils
     }
     public static class DisplayUtils
     {
+        public const string
+            BruteForceInfo = "RUN ALL CASES\r\n\r\n" +
+                             "Also known as Brute Force Algorithm.\r\n" +
+                             "It is a straightforward, simple approach to solve the optimal problem: " +
+                             "try every possible answers, then evaluate and choose the best result from them.\r\n\r\n" +
+                             "This approach works best for small input," +
+                             " where it can run in a reasonable amount of time. " +
+                             "With large input, using this algorithm may not practicle " +
+                             "due to its significantly running time.";
+
+        public const string 
+            SimulatedAnnealingInfo = "RUN SIMULATED ANNEALING ALGORITHM\r\n\r\n" +
+                                     "It is a Heuristic method, consists of four basic steps:\r\n" +
+                                     "1. Initialization\r\n" +
+                                     "2. Neighbour generation\r\n" +
+                                     "3. Acceptance test\r\n" +
+                                     "4. Stop condition checking\r\n\r\n" +
+                                     "For Step 1. Initialization, the initial answer is created using " +
+                                     "NEH algorithm proposed by Nawaz et al. initially for the " +
+                                     "regular flowshop problem is profusely used in the scheduling literature.";
+
         public static string DisplayText(this int[][] array, DisplayTypes type = DisplayTypes.Machine)
         {
             var display = "";
@@ -149,5 +170,6 @@ namespace FindMinCMax.Utils
 
             return display;
         }
+
     }
 }
