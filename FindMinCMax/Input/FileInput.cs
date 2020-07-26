@@ -32,6 +32,7 @@ namespace FindMinCMax.Input
                 LoadStageAndJob();
                 LoadMachines();
                 LoadEligibility();
+                LoadProcessingTimes();
 
                 return "";
             }
@@ -75,14 +76,14 @@ namespace FindMinCMax.Input
             var eligibilitySheet = _wb.GetSheet(FileInputConstants.EligibilitySheet);
             var startCell = _constants.EligibilityCellStart;
             var eligibility = new int[InputData.NumOfStages][][];
+            // loop through stages
             for (var i = 0; i < InputData.NumOfStages; ++i)
             {
-                // loop through stages
                 eligibility[i] = new int[InputData.NumOfJobs][];
                 var rowIndex = startCell.RowIndex + InputData.NumOfJobs * i;
+                // loop through jobs
                 for (var j = 0; j < InputData.NumOfJobs; ++j)
                 {
-                    // loop through jobs
                     var colIndex = startCell.ColIndex;
                     var machine = eligibilitySheet.GetCellIntValue(rowIndex, colIndex, FileInputConstants.EmptyCellValue);
                     var machines = new List<int>();
@@ -101,6 +102,32 @@ namespace FindMinCMax.Input
             }
 
             InputData.Eligibility = eligibility.ClonedInstance();
+        }
+
+        private static void LoadProcessingTimes()
+        {
+            var processingTimesSheet = _wb.GetSheet(FileInputConstants.ProcessingTimesSheet);
+            var startCell = _constants.ProcessingTimesCellStart;
+            var rowIndex = startCell.RowIndex;
+            var colIndex = startCell.ColIndex;
+            var processingTimes = new int[InputData.NumOfStages][][];
+            for (var i = 0; i < InputData.NumOfStages; ++i)
+            {
+                var numOfMachines = InputData.Machines[i].Length;
+                processingTimes[i] = new int[numOfMachines][];
+                for (var l = 0; l < numOfMachines; ++l)
+                {
+                    processingTimes[i][l] = new int[InputData.NumOfJobs];
+                    for (var j = 0; j < InputData.NumOfJobs; ++j)
+                    {
+                        var processingTime = processingTimesSheet.GetCellIntValue(rowIndex, colIndex);
+                        processingTimes[i][l][j] = processingTime;
+                        ++rowIndex;
+                    }
+                }
+            }
+
+            InputData.ProcessingTimes = processingTimes.ClonedInstance();
         }
     }
 }

@@ -17,10 +17,11 @@ namespace FindMinCMax.Input
 
         public const int EmptyCellValue = -1;
 
-        public readonly WorkbookCell NumOfStagesCellIndex = new WorkbookCell { RowIndex = 1, ColIndex = 1 };
-        public readonly WorkbookCell NumOfJobsCellIndex = new WorkbookCell { RowIndex = 2, ColIndex = 1 };
-        public readonly WorkbookCell NumOfMachinesCellStart = new WorkbookCell { RowIndex = 2, ColIndex = 1 };
-        public readonly WorkbookCell EligibilityCellStart = new WorkbookCell { RowIndex = 2, ColIndex = 2 };
+        public readonly WorkbookCell NumOfStagesCellIndex = new WorkbookCell { RowIndex = 1, ColIndex = 1 }; // Cell B2
+        public readonly WorkbookCell NumOfJobsCellIndex = new WorkbookCell { RowIndex = 2, ColIndex = 1 }; // Cell B3
+        public readonly WorkbookCell NumOfMachinesCellStart = new WorkbookCell { RowIndex = 2, ColIndex = 1 }; // Cell B3
+        public readonly WorkbookCell EligibilityCellStart = new WorkbookCell { RowIndex = 2, ColIndex = 2 }; // Cell C3
+        public readonly WorkbookCell ProcessingTimesCellStart = new WorkbookCell { RowIndex = 2, ColIndex = 3 }; // Cell D3
     }
 
     public class WorkbookCell
