@@ -35,6 +35,7 @@ namespace FindMinCMax.Input
                 LoadProcessingTimes();
                 LoadLagTimes();
                 LoadSetupTimes();
+                InputData.UpdateMaxNumOfMachinesEachStage();
 
                 return "";
             }
@@ -111,7 +112,6 @@ namespace FindMinCMax.Input
             var processingTimesSheet = _wb.GetSheet(FileInputConstants.ProcessingTimesSheet);
             var startCell = _constants.ProcessingTimesCellStart;
             var rowIndex = startCell.RowIndex;
-            var colIndex = startCell.ColIndex;
             var processingTimes = new int[InputData.NumOfStages][][];
             for (var i = 0; i < InputData.NumOfStages; ++i)
             {
@@ -120,12 +120,14 @@ namespace FindMinCMax.Input
                 for (var l = 0; l < numOfMachines; ++l)
                 {
                     processingTimes[i][l] = new int[InputData.NumOfJobs];
+                    var colIndex = startCell.ColIndex;
                     for (var j = 0; j < InputData.NumOfJobs; ++j)
                     {
                         var processingTime = processingTimesSheet.GetCellIntValue(rowIndex, colIndex);
                         processingTimes[i][l][j] = processingTime;
-                        ++rowIndex;
+                        ++colIndex;
                     }
+                    ++rowIndex;
                 }
             }
 
@@ -136,7 +138,6 @@ namespace FindMinCMax.Input
             var lagTimesSheet = _wb.GetSheet(FileInputConstants.LagTimesSheet);
             var startCell = _constants.LagTimesCellStart;
             var rowIndex = startCell.RowIndex;
-            var colIndex = startCell.ColIndex;
             var lagTimes = new int[InputData.NumOfStages - 1][][]; // last stage does not have lag time
             for (var i = 0; i < InputData.NumOfStages - 1; ++i) 
             {
@@ -145,12 +146,14 @@ namespace FindMinCMax.Input
                 for (var l = 0; l < numOfMachines; ++l)
                 {
                     lagTimes[i][l] = new int[InputData.NumOfJobs];
+                    var colIndex = startCell.ColIndex;
                     for (var j = 0; j < InputData.NumOfJobs; ++j)
                     {
                         var lagTime = lagTimesSheet.GetCellIntValue(rowIndex, colIndex);
                         lagTimes[i][l][j] = lagTime;
-                        ++rowIndex;
+                        ++colIndex;
                     }
+                    ++rowIndex;
                 }
             }
 
@@ -161,7 +164,6 @@ namespace FindMinCMax.Input
             var setupTimesSheet = _wb.GetSheet(FileInputConstants.SetupTimesSheet);
             var startCell = _constants.SetupTimesCellStart;
             var rowIndex = startCell.RowIndex;
-            var colIndex = startCell.ColIndex;
             var setupTimes = new int[InputData.NumOfStages][][][];
             for (var i = 0; i < InputData.NumOfStages; ++i) 
             {
@@ -173,13 +175,15 @@ namespace FindMinCMax.Input
                     for (var j = 0; j < InputData.NumOfJobs; ++j)
                     {
                         setupTimes[i][l][j] = new int[InputData.NumOfJobs];
+                        var colIndex = startCell.ColIndex;
                         for (var k = 0; k < InputData.NumOfJobs; ++k)
                         {
                             var setupTime = setupTimesSheet.GetCellIntValue(rowIndex, colIndex,
                                 FileInputConstants.EmptyCellValue);
                             setupTimes[i][l][j][k] = setupTime;
-                            ++rowIndex;
+                            ++colIndex;
                         }
+                        ++rowIndex;
                     }
                 }
             }

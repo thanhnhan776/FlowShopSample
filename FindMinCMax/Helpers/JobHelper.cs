@@ -110,7 +110,7 @@ namespace FindMinCMax.Helpers
         {
             InitJobAssignmentPermutation();
             PermuteAssignments(0, 0);
-            Console.WriteLine(JobAssignmentsCount);
+            Console.WriteLine("assignment count " + JobAssignmentsCount);
         }
 
         private void InitJobAssignmentPermutation()

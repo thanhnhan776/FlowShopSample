@@ -62,10 +62,10 @@
             this.btnRunBruteForce = new System.Windows.Forms.Button();
             this.txtResultBF = new System.Windows.Forms.TextBox();
             this.splitContainerOutputBottom = new System.Windows.Forms.SplitContainer();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtSALoopCount = new System.Windows.Forms.TextBox();
-            this.btnRunSA = new System.Windows.Forms.Button();
             this.btnRunSAInfo = new System.Windows.Forms.Button();
+            this.btnRunSA = new System.Windows.Forms.Button();
+            this.txtSALoopCount = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.txtResultSA = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerInput)).BeginInit();
@@ -245,7 +245,7 @@
             this.txtFileInput.Name = "txtFileInput";
             this.txtFileInput.Size = new System.Drawing.Size(252, 20);
             this.txtFileInput.TabIndex = 0;
-            this.txtFileInput.Text = "FlowShopInputData.xlsx";
+            this.txtFileInput.Text = "FlowShopInputData.v2.xlsx";
             // 
             // btnLoadFileInput
             // 
@@ -515,24 +515,16 @@
             this.splitContainerOutputBottom.SplitterDistance = 72;
             this.splitContainerOutputBottom.TabIndex = 0;
             // 
-            // label4
+            // btnRunSAInfo
             // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label4.Location = new System.Drawing.Point(0, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Loop count";
-            // 
-            // txtSALoopCount
-            // 
-            this.txtSALoopCount.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txtSALoopCount.Location = new System.Drawing.Point(0, 13);
-            this.txtSALoopCount.Name = "txtSALoopCount";
-            this.txtSALoopCount.Size = new System.Drawing.Size(72, 20);
-            this.txtSALoopCount.TabIndex = 4;
-            this.txtSALoopCount.Text = "3";
+            this.btnRunSAInfo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnRunSAInfo.Location = new System.Drawing.Point(0, 113);
+            this.btnRunSAInfo.Name = "btnRunSAInfo";
+            this.btnRunSAInfo.Size = new System.Drawing.Size(72, 23);
+            this.btnRunSAInfo.TabIndex = 2;
+            this.btnRunSAInfo.Text = "Info";
+            this.btnRunSAInfo.UseVisualStyleBackColor = true;
+            this.btnRunSAInfo.Click += new System.EventHandler(this.btnRunSAInfo_Click);
             // 
             // btnRunSA
             // 
@@ -545,16 +537,24 @@
             this.btnRunSA.UseVisualStyleBackColor = true;
             this.btnRunSA.Click += new System.EventHandler(this.btnRunSA_Click);
             // 
-            // btnRunSAInfo
+            // txtSALoopCount
             // 
-            this.btnRunSAInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnRunSAInfo.Location = new System.Drawing.Point(0, 113);
-            this.btnRunSAInfo.Name = "btnRunSAInfo";
-            this.btnRunSAInfo.Size = new System.Drawing.Size(72, 23);
-            this.btnRunSAInfo.TabIndex = 2;
-            this.btnRunSAInfo.Text = "Info";
-            this.btnRunSAInfo.UseVisualStyleBackColor = true;
-            this.btnRunSAInfo.Click += new System.EventHandler(this.btnRunSAInfo_Click);
+            this.txtSALoopCount.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txtSALoopCount.Location = new System.Drawing.Point(0, 13);
+            this.txtSALoopCount.Name = "txtSALoopCount";
+            this.txtSALoopCount.Size = new System.Drawing.Size(72, 20);
+            this.txtSALoopCount.TabIndex = 4;
+            this.txtSALoopCount.Text = "3";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label4.Location = new System.Drawing.Point(0, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(61, 13);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Loop count";
             // 
             // txtResultSA
             // 

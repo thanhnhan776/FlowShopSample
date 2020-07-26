@@ -8,7 +8,7 @@ namespace FindMinCMax.Input
 {
     public static class InputData
     {
-        public const int MaxNumOfMachinesEachStage = 10;
+        public static int MaxNumOfMachinesEachStage = 10;
 
         public static int NumOfStages { get; set; } = 3;
 
@@ -93,5 +93,13 @@ namespace FindMinCMax.Input
                 }
             }
         }; // setupTimes[i][l][j][k]: stage i, machine l, job j precedes job k
+
+        public static void UpdateMaxNumOfMachinesEachStage()
+        {
+            var num = Machines.Select(machine => machine.Length).Concat(new[] {0}).Max();
+
+            MaxNumOfMachinesEachStage = num;
+        }
     }
+
 }
