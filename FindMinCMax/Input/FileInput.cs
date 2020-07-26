@@ -34,6 +34,7 @@ namespace FindMinCMax.Input
                 LoadEligibility();
                 LoadProcessingTimes();
                 LoadLagTimes();
+                LoadSetupTimes();
 
                 return "";
             }
@@ -154,6 +155,36 @@ namespace FindMinCMax.Input
             }
 
             InputData.LagTimes = lagTimes.ClonedInstance();
+        }
+        private static void LoadSetupTimes()
+        {
+            var setupTimesSheet = _wb.GetSheet(FileInputConstants.SetupTimesSheet);
+            var startCell = _constants.SetupTimesCellStart;
+            var rowIndex = startCell.RowIndex;
+            var colIndex = startCell.ColIndex;
+            var setupTimes = new int[InputData.NumOfStages][][][];
+            for (var i = 0; i < InputData.NumOfStages; ++i) 
+            {
+                var numOfMachines = InputData.Machines[i].Length;
+                setupTimes[i] = new int[numOfMachines][][];
+                for (var l = 0; l < numOfMachines; ++l)
+                {
+                    setupTimes[i][l] = new int[InputData.NumOfJobs][];
+                    for (var j = 0; j < InputData.NumOfJobs; ++j)
+                    {
+                        setupTimes[i][l][j] = new int[InputData.NumOfJobs];
+                        for (var k = 0; k < InputData.NumOfJobs; ++k)
+                        {
+                            var setupTime = setupTimesSheet.GetCellIntValue(rowIndex, colIndex,
+                                FileInputConstants.EmptyCellValue);
+                            setupTimes[i][l][j][k] = setupTime;
+                            ++rowIndex;
+                        }
+                    }
+                }
+            }
+
+            InputData.SetupTimes = setupTimes.ClonedInstance();
         }
     }
 }

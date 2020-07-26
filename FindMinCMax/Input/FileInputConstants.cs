@@ -23,6 +23,7 @@ namespace FindMinCMax.Input
         public readonly WorkbookCell EligibilityCellStart = new WorkbookCell { RowIndex = 2, ColIndex = 2 }; // Cell C3
         public readonly WorkbookCell ProcessingTimesCellStart = new WorkbookCell { RowIndex = 2, ColIndex = 3 }; // Cell D3
         public readonly WorkbookCell LagTimesCellStart = new WorkbookCell { RowIndex = 2, ColIndex = 3 }; // Cell D3
+        public readonly WorkbookCell SetupTimesCellStart = new WorkbookCell { RowIndex = 2, ColIndex = 4 }; // Cell E3
     }
 
     public class WorkbookCell
