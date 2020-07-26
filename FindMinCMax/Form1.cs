@@ -78,25 +78,34 @@ namespace FindMinCMax
         private void btnRunBruteForce_Click(object sender, EventArgs e)
         {
             EnableRunButtons(false);
-
-            var jobHelper = new JobHelper();
-            jobHelper.GeneratePermutation();
-            var cMax = jobHelper.ResultCmax;
-            var jobPermutation = jobHelper.ResultJobPermutation;
-            var jobAssignment = jobHelper.ResultJobAssignments;
-
-            var displayResultText = DisplayUtils.DisplayText(cMax, jobPermutation, jobAssignment);
-            var displayAlternativeResultText = $"\r\n--- ALTERNATIVE RESULTS --- Found {jobHelper.Results.Count} ---\r\n";
-            for (var i = 0; i < jobHelper.Results.Count; ++i)
+            try
             {
-                var result = jobHelper.Results[i];
-                displayAlternativeResultText += $"\r\n=== ({i + 1}) ===\r\n" + result.DisplayText();
+                var jobHelper = new JobHelper();
+                jobHelper.GeneratePermutation();
+                var cMax = jobHelper.ResultCmax;
+                var jobPermutation = jobHelper.ResultJobPermutation;
+                var jobAssignment = jobHelper.ResultJobAssignments;
+
+                var displayResultText = DisplayUtils.DisplayText(cMax, jobPermutation, jobAssignment);
+                var displayAlternativeResultText =
+                    $"\r\n--- ALTERNATIVE RESULTS --- Found {jobHelper.Results.Count} ---\r\n";
+                for (var i = 0; i < jobHelper.Results.Count; ++i)
+                {
+                    var result = jobHelper.Results[i];
+                    displayAlternativeResultText += $"\r\n=== ({i + 1}) ===\r\n" + result.DisplayText();
+                }
+
+
+                txtResultBF.Text = displayResultText + displayAlternativeResultText;
             }
-
-
-            txtResultBF.Text = displayResultText + displayAlternativeResultText;
-
-            EnableRunButtons();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                EnableRunButtons();
+            }
         }
 
         private void EnableRunButtons(bool isEnabled = true)
@@ -108,26 +117,35 @@ namespace FindMinCMax
         private void btnRunSA_Click(object sender, EventArgs e)
         {
             EnableRunButtons(false);
-
-            var sa = new SimulatedAnnealingAlgo
+            try
             {
-                NumOfJobs = InputData.NumOfJobs,
-                LoopCount = 3
-            };
-            sa.StartSimulating();
+                var sa = new SimulatedAnnealingAlgo
+                {
+                    NumOfJobs = InputData.NumOfJobs,
+                    LoopCount = 3
+                };
+                sa.StartSimulating();
 
-            var initText = DisplayUtils.DisplayText(sa.InitJobs.Cmax, sa.InitJobs.JobsPermutation,
-                sa.InitJobs.JobsAssignment);
+                var initText = DisplayUtils.DisplayText(sa.InitJobs.Cmax, sa.InitJobs.JobsPermutation,
+                    sa.InitJobs.JobsAssignment);
 
-            var cMax = sa.ResultCmax;
-            var jobPermutation = sa.ResultJobPermutation;
-            var jobAssignment = sa.ResultJobAssignment;
-            var resultText = DisplayUtils.DisplayText(cMax, jobPermutation, jobAssignment);
+                var cMax = sa.ResultCmax;
+                var jobPermutation = sa.ResultJobPermutation;
+                var jobAssignment = sa.ResultJobAssignment;
+                var resultText = DisplayUtils.DisplayText(cMax, jobPermutation, jobAssignment);
 
-            txtResultSA.Text = $"--- CHOSEN INIT JOBS ---\r\n{initText}\r\n\r\n" +
-                                $"--- RESULT JOBS ---\r\n{resultText}";
+                txtResultSA.Text = $"--- CHOSEN INIT JOBS ---\r\n{initText}\r\n\r\n" +
+                                   $"--- RESULT JOBS ---\r\n{resultText}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                EnableRunButtons();
 
-            EnableRunButtons();
+            }
         }
 
         private void btnLoadFileInput_Click(object sender, EventArgs e)
