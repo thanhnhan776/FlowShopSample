@@ -33,6 +33,7 @@ namespace FindMinCMax.Input
                 LoadMachines();
                 LoadEligibility();
                 LoadProcessingTimes();
+                LoadLagTimes();
 
                 return "";
             }
@@ -128,6 +129,31 @@ namespace FindMinCMax.Input
             }
 
             InputData.ProcessingTimes = processingTimes.ClonedInstance();
+        }
+        private static void LoadLagTimes()
+        {
+            var lagTimesSheet = _wb.GetSheet(FileInputConstants.LagTimesSheet);
+            var startCell = _constants.LagTimesCellStart;
+            var rowIndex = startCell.RowIndex;
+            var colIndex = startCell.ColIndex;
+            var lagTimes = new int[InputData.NumOfStages - 1][][]; // last stage does not have lag time
+            for (var i = 0; i < InputData.NumOfStages - 1; ++i) 
+            {
+                var numOfMachines = InputData.Machines[i].Length;
+                lagTimes[i] = new int[numOfMachines][];
+                for (var l = 0; l < numOfMachines; ++l)
+                {
+                    lagTimes[i][l] = new int[InputData.NumOfJobs];
+                    for (var j = 0; j < InputData.NumOfJobs; ++j)
+                    {
+                        var lagTime = lagTimesSheet.GetCellIntValue(rowIndex, colIndex);
+                        lagTimes[i][l][j] = lagTime;
+                        ++rowIndex;
+                    }
+                }
+            }
+
+            InputData.LagTimes = lagTimes.ClonedInstance();
         }
     }
 }
