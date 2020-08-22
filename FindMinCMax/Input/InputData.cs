@@ -100,6 +100,8 @@ namespace FindMinCMax.Input
         public static int[][][][] EligibilityGroups { get; set; }
         // EligibilityGroups[i][j][g][l]: stage i, job j, group g, machine l
 
+        public static int[][][] GroupOfMachine { get; set; }
+
         public static void UpdateMaxNumOfMachinesEachStage()
         {
             var num = Machines.Select(machine => machine.Length).Concat(new[] { 0 }).Max();
@@ -159,6 +161,30 @@ namespace FindMinCMax.Input
                     }
 
                     EligibilityGroups[i][j] = groups.To2DArray();
+                }
+            }
+            MapToGroupOfMachine();
+        }
+
+        private static void MapToGroupOfMachine()
+        {
+            GroupOfMachine = new int[NumOfStages][][];
+            for (var i = 0; i < NumOfStages; ++i)
+            {
+                GroupOfMachine[i] = new int[NumOfJobs][];
+                for (var j = 0; j < NumOfJobs; ++j)
+                {
+                    var groupsCount = EligibilityGroups[i][j].Length;
+                    GroupOfMachine[i][j] = new int[MaxNumOfMachinesEachStage];
+                    for (var g = 0; g < groupsCount; ++g)
+                    {
+                        var machinesGroupCount = EligibilityGroups[i][j][g].Length;
+                        for (var l = 0; l < machinesGroupCount; ++l)
+                        {
+                            var machinePosition = EligibilityGroups[i][j][g][l];
+                            GroupOfMachine[i][j][machinePosition] = g;
+                        }
+                    }
                 }
             }
         }
