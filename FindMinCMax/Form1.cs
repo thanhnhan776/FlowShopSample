@@ -20,6 +20,8 @@ namespace FindMinCMax
         private int[][][] lagTimes;
         private int[][][][] setupTimes;
 
+        private bool groupMachineAssignment = true;
+
         private readonly Stopwatch _watch = new Stopwatch();
 
         public Form1()
@@ -38,6 +40,11 @@ namespace FindMinCMax
             processingTimes = InputData.ProcessingTimes;
             lagTimes = InputData.LagTimes;
             setupTimes = InputData.SetupTimes;
+            InputData.UpdateMaxNumOfMachinesEachStage();
+            if (groupMachineAssignment)
+            {
+                InputData.GroupMachineAssignment();
+            }
         }
 
         private void InitDisplayInputData()

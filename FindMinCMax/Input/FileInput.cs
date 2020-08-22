@@ -18,7 +18,7 @@ namespace FindMinCMax.Input
         private static FileInputConstants _constants;
 
         /// <summary>
-        /// load input data from file
+        /// load input data from file, store in InputData
         /// </summary>
         /// <returns>error message, if any</returns>
         public static string LoadInputData()

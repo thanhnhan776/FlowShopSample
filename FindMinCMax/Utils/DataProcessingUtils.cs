@@ -47,5 +47,17 @@ namespace FindMinCMax.Utils
             var cell = new WorkbookCell { RowIndex = rowIndex, ColIndex = colIndex };
             return GetCellIntValue(sheet, cell, defaultValue);
         }
+
+        public static int[][] To2DArray(this List<List<int>> lists)
+        {
+            var listsCount = lists.Count;
+            var array = new int[listsCount][];
+            for (var i = 0; i < listsCount; ++i)
+            {
+                array[i] = lists[i].ToArray();
+            }
+
+            return array;
+        }
     }
 }

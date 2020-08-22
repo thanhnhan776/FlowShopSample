@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using FindMinCMax.Utils;
 
 namespace FindMinCMax.Input
 {
@@ -94,11 +97,80 @@ namespace FindMinCMax.Input
             }
         }; // setupTimes[i][l][j][k]: stage i, machine l, job j precedes job k
 
+        public static int[][][][] EligibilityGroups { get; set; }
+        // EligibilityGroups[i][j][g][l]: stage i, job j, group g, machine l
+
         public static void UpdateMaxNumOfMachinesEachStage()
         {
-            var num = Machines.Select(machine => machine.Length).Concat(new[] {0}).Max();
+            var num = Machines.Select(machine => machine.Length).Concat(new[] { 0 }).Max();
 
             MaxNumOfMachinesEachStage = num;
+        }
+
+        /// <summary>
+        /// Group eligibility table so that a job in each stage
+        /// will have a group of assignable machines,
+        /// each group contain machines with the same processing time, lag time and setup time
+        /// </summary>
+        public static void GroupMachineAssignment()
+        {
+            EligibilityGroups = new int[NumOfStages][][][];
+            for (var i = 0; i < NumOfStages; ++i)
+            {
+                EligibilityGroups[i] = new int[NumOfJobs][][];
+                for (var j = 0; j < NumOfJobs; ++j)
+                {
+                    var numOfMachines = Eligibility[i][j].Length;
+                    var groups = new List<List<int>>();
+                    for (var l = 0; l < numOfMachines; ++l)
+                    {
+                        var machinePosition = Eligibility[i][j][l] - 1;
+                        if (groups.Count == 0)
+                        {
+                            var group = new List<int>(new []{machinePosition});
+                            groups.Add(group);
+                        }
+                        else
+                        {
+                            // check if this machine belong to any group
+                            var isNewGroup = true;
+                            foreach (var group in groups)
+                            {
+                                var gMachinePosition = group[0];
+                                if (IsSameMachineGroup(
+                                    gMachinePosition, 
+                                    machinePosition, 
+                                    i, 
+                                    j,
+                                    i == NumOfStages - 1))
+                                {
+                                    isNewGroup = false;
+                                    group.Add(machinePosition);
+                                    break;
+                                }
+                            }
+
+                            if (isNewGroup)
+                            {
+                                var group = new List<int>(new[] {machinePosition});
+                                groups.Add(group);
+                            }
+                        }
+                    }
+
+                    EligibilityGroups[i][j] = groups.To2DArray();
+                }
+            }
+        }
+
+        private static bool IsSameMachineGroup(int machinePosition1, int machinePosition2, 
+            int stage, int job, bool isLastStage)
+        {
+            var isSameProcessingTimes = ProcessingTimes[stage][machinePosition1][job] ==
+                                        ProcessingTimes[stage][machinePosition2][job];
+            var isSameLagTimes = isLastStage 
+                                 || LagTimes[stage][machinePosition1][job] == LagTimes[stage][machinePosition2][job];
+            return isSameProcessingTimes && isSameLagTimes;
         }
     }
 
